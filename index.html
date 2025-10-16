@@ -5,7 +5,7 @@
   <title>MSF Helper</title>
   <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.15.0/dist/cdn.min.js" defer></script>
   <style>
-  /* Modern Design System */
+  /* Mobile-First Design System */
   :root {
     /* Light Theme Colors */
     --bg: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
@@ -47,13 +47,14 @@
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     
-    /* Spacing */
+    /* Mobile-First Spacing */
     --space-xs: 0.25rem;
     --space-sm: 0.5rem;
-    --space-md: 1rem;
-    --space-lg: 1.5rem;
-    --space-xl: 2rem;
-    --space-2xl: 3rem;
+    --space-md: 0.75rem;
+    --space-lg: 1rem;
+    --space-xl: 1.5rem;
+    --space-2xl: 2rem;
+    --space-3xl: 3rem;
     
     /* Border Radius */
     --radius-sm: 0.375rem;
@@ -64,6 +65,10 @@
     /* Typography */
     --font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    
+    /* Mobile-specific */
+    --touch-target: 44px;
+    --mobile-padding: 1rem;
   }
   
   /* Dark Theme */
@@ -102,6 +107,11 @@
     box-sizing: border-box;
   }
   
+  html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+  }
+  
   body {
     margin: 0;
     padding: 0;
@@ -109,23 +119,24 @@
     background: var(--bg);
     color: var(--text);
     font-family: var(--font-family);
-    font-size: 16px;
-    line-height: 1.6;
+    font-size: 1rem;
+    line-height: 1.5;
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding-top: 2rem;
+    padding: var(--space-md);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   
-  /* App Container */
+  /* Mobile-First App Container */
   .app {
-    max-width: 1000px;
     width: 100%;
-    padding: var(--space-2xl);
+    max-width: 100%;
+    padding: var(--space-lg);
     background: var(--card-bg);
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-xl);
-    margin: 0 var(--space-md);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
     position: relative;
     overflow: hidden;
   }
@@ -136,47 +147,48 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 4px;
+    height: 3px;
     background: linear-gradient(90deg, var(--accent) 0%, var(--accent-dark) 100%);
   }
   
-  /* Header */
+  /* Mobile-First Header */
   h2 {
-    margin: 0 0 var(--space-2xl) 0;
+    margin: 0 0 var(--space-xl) 0;
     color: var(--accent);
-    font-size: 2.5rem;
+    font-size: 1.75rem;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: -0.025em;
     text-align: center;
     position: relative;
+    line-height: 1.2;
   }
   
   h2::after {
     content: '';
     position: absolute;
-    bottom: -0.5rem;
+    bottom: -0.25rem;
     left: 50%;
     transform: translateX(-50%);
-    width: 4rem;
-    height: 3px;
+    width: 3rem;
+    height: 2px;
     background: linear-gradient(90deg, var(--accent) 0%, var(--accent-dark) 100%);
-    border-radius: 2px;
+    border-radius: 1px;
   }
   
-  /* Theme Switch */
+  /* Mobile-First Theme Switch */
   .theme-switch {
     position: fixed;
-    top: var(--space-lg);
-    right: var(--space-lg);
+    top: var(--space-md);
+    right: var(--space-md);
     z-index: 1000;
   }
   
   .switch {
     position: relative;
     display: inline-block;
-    width: 60px;
-    height: 32px;
+    width: 50px;
+    height: 28px;
   }
   
   .switch input {
@@ -194,15 +206,15 @@
     bottom: 0;
     background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
     transition: all 0.3s ease;
-    border-radius: 32px;
+    border-radius: 28px;
     box-shadow: var(--shadow-sm);
   }
   
   .slider::before {
     position: absolute;
     content: "";
-    height: 24px;
-    width: 24px;
+    height: 20px;
+    width: 20px;
     left: 4px;
     bottom: 4px;
     background: white;
@@ -216,21 +228,21 @@
   }
   
   input:checked + .slider::before {
-    transform: translateX(28px);
+    transform: translateX(22px);
   }
   
-  /* Navigation */
+  /* Mobile-First Navigation */
   .nav-buttons {
     display: flex;
-    gap: var(--space-md);
-    margin-bottom: var(--space-2xl);
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-xl);
   }
   
   .nav-buttons button {
-    flex: 1;
-    min-width: 160px;
-    padding: var(--space-lg) var(--space-xl);
+    width: 100%;
+    min-height: var(--touch-target);
+    padding: var(--space-md) var(--space-lg);
     border: none;
     border-radius: var(--radius-lg);
     background: var(--button-secondary);
@@ -241,6 +253,9 @@
     transition: all 0.2s ease;
     position: relative;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
   .nav-buttons button::before {
@@ -260,8 +275,8 @@
   
   .nav-buttons button:hover {
     background: var(--button-secondary-hover);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
   }
   
   .nav-buttons button.active {
@@ -273,9 +288,9 @@
     background: var(--button-primary-hover);
   }
   
-  /* Form Fields */
+  /* Mobile-First Form Fields */
   .field {
-    margin-bottom: var(--space-xl);
+    margin-bottom: var(--space-lg);
     display: flex;
     flex-direction: column;
     position: relative;
@@ -284,7 +299,7 @@
   .field label {
     font-weight: 600;
     margin-bottom: var(--space-sm);
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     color: var(--text);
     display: flex;
     align-items: center;
@@ -293,14 +308,16 @@
   
   .field label::before {
     content: '';
-    width: 4px;
-    height: 4px;
+    width: 3px;
+    height: 3px;
     background: var(--accent);
     border-radius: 50%;
+    flex-shrink: 0;
   }
   
   input, select, textarea {
-    padding: var(--space-lg) var(--space-xl);
+    min-height: var(--touch-target);
+    padding: var(--space-md) var(--space-lg);
     border: 2px solid var(--input-border);
     border-radius: var(--radius-lg);
     font-size: 1rem;
@@ -309,6 +326,7 @@
     color: var(--text);
     transition: all 0.2s ease;
     box-shadow: var(--input-shadow);
+    width: 100%;
   }
   
   input:focus, select:focus, textarea:focus {
@@ -324,18 +342,25 @@
   
   select {
     appearance: none;
-    background: var(--input-bg) url('data:image/svg+xml;utf8,<svg fill="%2364748b" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5H7z"/></svg>') no-repeat right 20px center;
-    background-size: 20px;
-    padding-right: 50px;
+    background: var(--input-bg) url('data:image/svg+xml;utf8,<svg fill="%2364748b" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5H7z"/></svg>') no-repeat right 16px center;
+    background-size: 16px;
+    padding-right: 40px;
     cursor: pointer;
   }
   
   textarea {
     resize: vertical;
-    min-height: 120px;
+    min-height: 100px;
+    font-family: var(--font-family);
   }
   
-  /* Buttons */
+  /* Error States */
+  input.error, select.error, textarea.error {
+    border-color: var(--error);
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+  }
+  
+  /* Mobile-First Buttons */
   button {
     font-family: var(--font-family);
     font-weight: 600;
@@ -344,6 +369,7 @@
     border: none;
     position: relative;
     overflow: hidden;
+    min-height: var(--touch-target);
   }
   
   button:disabled {
@@ -354,13 +380,14 @@
   button.generate {
     background: linear-gradient(135deg, var(--button-primary) 0%, var(--button-primary-hover) 100%);
     color: white;
-    padding: var(--space-lg) var(--space-2xl);
+    padding: var(--space-lg) var(--space-xl);
     border-radius: var(--radius-lg);
     font-size: 1.1rem;
     font-weight: 700;
-    margin-top: var(--space-xl);
+    margin-top: var(--space-lg);
     width: 100%;
     box-shadow: var(--shadow-md);
+    min-height: 52px;
   }
   
   button.generate:hover:not(:disabled) {
@@ -379,6 +406,7 @@
     border-radius: var(--radius-md);
     font-size: 0.9rem;
     width: 100%;
+    min-height: 44px;
   }
   
   button.secondary:hover {
@@ -386,9 +414,9 @@
     transform: translateY(-1px);
   }
   
-  /* Details/Accordion */
+  /* Mobile-First Details/Accordion */
   details {
-    margin-bottom: var(--space-xl);
+    margin-bottom: var(--space-lg);
     border: 2px solid var(--input-border);
     border-radius: var(--radius-lg);
     background: var(--card-bg);
@@ -405,18 +433,19 @@
     cursor: pointer;
     font-weight: 600;
     color: var(--accent);
-    padding: var(--space-lg) var(--space-xl);
+    padding: var(--space-lg);
     display: flex;
     justify-content: space-between;
     align-items: center;
     background: var(--accent-light);
     transition: all 0.2s ease;
     position: relative;
+    min-height: var(--touch-target);
   }
   
   summary:hover {
     background: var(--accent-light);
-    padding-left: calc(var(--space-xl) + 4px);
+    padding-left: calc(var(--space-lg) + 4px);
   }
   
   summary::after {
@@ -435,23 +464,27 @@
   }
   
   details[open] > *:not(summary) {
-    padding: var(--space-xl);
+    padding: var(--space-lg);
   }
   
-  /* Table */
+  /* Mobile-First Table */
+  .table-container {
+    overflow-x: auto;
+    margin-top: var(--space-lg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+  }
+  
   table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: var(--space-xl);
-    font-size: 0.9rem;
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    box-shadow: var(--shadow-sm);
+    font-size: 0.85rem;
+    min-width: 600px;
   }
   
   th, td {
     border: 1px solid var(--table-border);
-    padding: var(--space-lg);
+    padding: var(--space-md);
     text-align: left;
     vertical-align: middle;
   }
@@ -460,9 +493,12 @@
     background: var(--table-th-bg);
     font-weight: 700;
     color: var(--text);
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    position: sticky;
+    top: 0;
+    z-index: 1;
   }
   
   .link-row:nth-child(even) {
@@ -479,20 +515,24 @@
     flex-direction: column;
   }
   
-  /* Code Box */
+  /* Mobile-First Code Box */
   .codebox {
     background: #0f172a;
     color: #10b981;
     font-family: var(--font-mono);
-    padding: var(--space-lg) var(--space-xl);
+    padding: var(--space-lg);
     border-radius: var(--radius-lg);
-    margin-top: var(--space-xl);
+    margin-top: var(--space-lg);
     white-space: nowrap;
     overflow-x: auto;
     cursor: pointer;
     transition: all 0.2s ease;
     border: 2px solid #1e293b;
     position: relative;
+    font-size: 0.85rem;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
   }
   
   .codebox:hover {
@@ -515,14 +555,15 @@
     opacity: 1;
   }
   
-  /* Notifications */
+  /* Mobile-First Notifications */
   .notifikation {
     position: fixed;
-    bottom: var(--space-xl);
-    right: var(--space-xl);
+    bottom: var(--space-lg);
+    left: var(--space-lg);
+    right: var(--space-lg);
     background: var(--button-primary);
     color: white;
-    padding: var(--space-lg) var(--space-xl);
+    padding: var(--space-lg);
     border-radius: var(--radius-lg);
     font-size: 0.9rem;
     font-weight: 600;
@@ -531,6 +572,7 @@
     transition: all 0.3s ease;
     z-index: 1000;
     box-shadow: var(--shadow-lg);
+    text-align: center;
   }
   
   .notifikation.show {
@@ -544,12 +586,11 @@
     font-weight: 600;
   }
   
-  /* SMS Counter */
+  /* Mobile-First SMS Counter */
   .sms-output {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: var(--space-lg);
+    flex-direction: column;
+    gap: var(--space-sm);
     margin: var(--space-lg) 0;
     padding: var(--space-lg);
     background: var(--accent-light);
@@ -557,12 +598,26 @@
     border-left: 4px solid var(--accent);
   }
   
+  .sms-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+  
+  .sms-warning {
+    color: var(--error);
+    font-weight: bold;
+    font-size: 0.9rem;
+  }
+  
   .progress-container {
-    height: 12px;
+    height: 8px;
     background: var(--input-border);
     border-radius: var(--radius-md);
     overflow: hidden;
-    margin-top: var(--space-md);
+    margin-top: var(--space-sm);
     position: relative;
   }
   
@@ -589,44 +644,6 @@
     100% { transform: translateX(100%); }
   }
   
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    body {
-      padding-top: var(--space-md);
-    }
-    
-    .app {
-      margin: 0 var(--space-sm);
-      padding: var(--space-xl);
-    }
-    
-    h2 {
-      font-size: 2rem;
-    }
-    
-    .nav-buttons {
-      flex-direction: column;
-    }
-    
-    .nav-buttons button {
-      min-width: auto;
-    }
-    
-    .sms-output {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: var(--space-sm);
-    }
-    
-    table {
-      font-size: 0.8rem;
-    }
-    
-    th, td {
-      padding: var(--space-md);
-    }
-  }
-  
   /* Loading Animation */
   @keyframes pulse {
     0%, 100% { opacity: 1; }
@@ -644,6 +661,110 @@
   textarea:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
+  }
+  
+  /* Tablet Styles */
+  @media (min-width: 768px) {
+    :root {
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2rem;
+      --space-2xl: 2.5rem;
+      --space-3xl: 3.5rem;
+    }
+    
+    body {
+      padding: var(--space-xl);
+    }
+    
+    .app {
+      max-width: 800px;
+      padding: var(--space-2xl);
+    }
+    
+    h2 {
+      font-size: 2.25rem;
+      margin-bottom: var(--space-2xl);
+    }
+    
+    h2::after {
+      width: 4rem;
+      height: 3px;
+    }
+    
+    .nav-buttons {
+      flex-direction: row;
+      gap: var(--space-md);
+    }
+    
+    .nav-buttons button {
+      flex: 1;
+      min-width: 160px;
+    }
+    
+    .sms-output {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .sms-stats {
+      flex-direction: row;
+    }
+    
+    .notifikation {
+      left: auto;
+      right: var(--space-xl);
+      bottom: var(--space-xl);
+      max-width: 400px;
+    }
+    
+    table {
+      font-size: 0.9rem;
+    }
+    
+    th, td {
+      padding: var(--space-lg);
+    }
+  }
+  
+  /* Desktop Styles */
+  @media (min-width: 1024px) {
+    .app {
+      max-width: 1000px;
+      padding: var(--space-3xl);
+    }
+    
+    h2 {
+      font-size: 2.5rem;
+    }
+    
+    .codebox {
+      font-size: 0.9rem;
+    }
+    
+    .field {
+      margin-bottom: var(--space-xl);
+    }
+    
+    input, select, textarea {
+      padding: var(--space-lg) var(--space-xl);
+    }
+    
+    button.generate {
+      padding: var(--space-lg) var(--space-2xl);
+    }
+  }
+  
+  /* Large Desktop Styles */
+  @media (min-width: 1280px) {
+    .app {
+      max-width: 1200px;
+    }
+    
+    .nav-buttons button {
+      min-width: 200px;
+    }
   }
   </style>
   </head>
@@ -694,8 +815,8 @@
     </div>
 
     <div class="field" x-show="kanal">
-      <label>Kampagnetype</label>
-      <select x-model="kampagneType" @change="opdaterKampagnekode()">
+      <label>Kampagnetype <span style="color: var(--error);">*</span></label>
+      <select x-model="kampagneType" @change="opdaterKampagnekode()" :class="{'error': validationErrors.kampagneType}">
         <option value="">Vælg kampagnetype</option>
         <template x-for="k in [
           {v:'feltpartner_nyhedsbrev', t:'Feltpartner nyhedsbrev'},
@@ -705,6 +826,9 @@
           <option :value="k.v" x-text="k.t"></option>
         </template>
       </select>
+      <div x-show="validationErrors.kampagneType" style="color: var(--error); font-size: 0.85rem; margin-top: 0.25rem;">
+        <span x-text="validationErrors.kampagneType"></span>
+      </div>
     </div>
 
     <template x-if="kampagneType==='oremærket_kampagne'">
@@ -761,32 +885,34 @@
       <button class="secondary" @click="kopierAlle()">Kopier alle links</button>
     </div>
 
-    <table x-show="links.length">
-      <thead>
-        <tr>
-          <th>utm_source</th><th>utm_medium</th><th>utm_campaign</th>
-          <th x-show="links[0].utm_content">utm_content</th>
-          <th x-show="links[0].anker">Anker</th><th>Status</th><th>Handlinger</th>
-        </tr>
-      </thead>
-      <tbody>
-        <template x-for="(l,i) in links" :key="i">
-          <tr class="link-row">
-            <td x-text="l.utm_source"></td>
-            <td x-text="l.utm_medium"></td>
-            <td x-text="l.utm_campaign"></td>
-            <td x-show="l.utm_content" x-text="l.utm_content"></td>
-            <td x-show="l.anker" x-text="l.anker"></td>
-            <td :class="l.statusClass" x-text="l.statusText"></td>
-            <td>
-              <div class="link-buttons">
-                <button class="secondary" @click="aabn(l.url)">Åbn</button>
-              </div>
-            </td>
+    <div x-show="links.length" class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>utm_source</th><th>utm_medium</th><th>utm_campaign</th>
+            <th x-show="links[0].utm_content">utm_content</th>
+            <th x-show="links[0].anker">Anker</th><th>Status</th><th>Handlinger</th>
           </tr>
-        </template>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <template x-for="(l,i) in links" :key="i">
+            <tr class="link-row">
+              <td x-text="l.utm_source"></td>
+              <td x-text="l.utm_medium"></td>
+              <td x-text="l.utm_campaign"></td>
+              <td x-show="l.utm_content" x-text="l.utm_content"></td>
+              <td x-show="l.anker" x-text="l.anker"></td>
+              <td :class="l.statusClass" x-text="l.statusText"></td>
+              <td>
+                <div class="link-buttons">
+                  <button class="secondary" @click="aabn(l.url)">Åbn</button>
+                </div>
+              </td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+    </div>
 
     <div class="notifikation" :class="{show: visNotifikation}" x-text="notifikationBesked"></div>
   </div>
@@ -796,12 +922,20 @@
       <label for="smsText">SMS tekst</label>
       <textarea id="smsText" rows="6" x-model="tekst" placeholder="Skriv din SMS her..."></textarea>
     </div>
-    <div class="sms-output" style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
-      <div>Antal tegn: <span x-text="antalTegn"></span><br>Antal SMS'er: <span x-text="antalSms"></span></div>
-      <div x-show="antalTegn>160" style="color:#f44336;font-weight:bold;">⚠ SMS vil blive delt i <span x-text="antalSms"></span> dele</div>
+    <div class="sms-output">
+      <div class="sms-stats">
+        <div>Antal tegn: <span x-text="antalTegn"></span></div>
+        <div>Antal SMS'er: <span x-text="antalSms"></span></div>
+      </div>
+      <div x-show="warningMessage" class="sms-warning" x-text="warningMessage"></div>
     </div>
-    <div class="progress-container" style="height:10px;background:#eee;border-radius:6px;overflow:hidden;margin-top:8px;">
-      <div class="progress-bar" :style="{width:(antalTegn>160?100:(antalTegn/160*100))+'%',background:antalTegn<100?'#4caf50':antalTegn<140?'#ffeb3b':antalTegn<160?'#ff9800':'#f44336',height:'100%',transition:'width 0.2s linear, background 0.3s ease'}"></div>
+    <div class="progress-container">
+      <div class="progress-bar" :style="{
+        width: progressPercentage + '%',
+        background: progressColor,
+        height: '100%',
+        transition: 'width 0.2s linear, background 0.3s ease'
+      }"></div>
     </div>
   </div>
 

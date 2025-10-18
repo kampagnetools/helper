@@ -24,7 +24,7 @@ input:checked+.slider::before{transform:translateX(24px);}
 button.secondary{background:var(--button-bg);width:100%;color:#fff;padding:12px;border-radius:10px;font-weight:600;}
 .field{margin-bottom:18px;display:flex;flex-direction:column;}
 .field label{font-weight:600;margin-bottom:8px;font-size:16px;}
-input,select,textarea{padding:14px 18px;border:1px solid var(--input-border);border-radius:10px;font-size:16px;width:100%;background:var(--input-bg);color:var(--text);  max-width: 100%;box-sizing: border-box;}
+input,select,textarea{padding:14px 18px;border:1px solid var(--input-border);border-radius:10px;font-size:16px;width:100%;background:var(--input-bg);color:var(--text);max-width:100%;box-sizing:border-box;}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(227,6,19,0.2);}
 select{appearance:none;background:var(--input-bg) url('data:image/svg+xml;utf8,<svg fill="%231e1e1e" height="16" viewBox="0 0 24 24" width="16"><path d="M7 10l5 5 5-5H7z"/></svg>') no-repeat right 20px center;background-size:16px;padding-right:44px;cursor:pointer;}
 textarea{resize:vertical;}
@@ -131,7 +131,43 @@ basisUrl:'',kanal:'',kampagne:'',kampagneType:'',indhold:'',utmCampaign:'',anker
 kanalMap:{email:{source:'sfmc',medium:'email'},sms:{source:'sfmc',medium:'sms'},meta:{source:'meta',medium:'paid_social'},facebook:{source:'facebook',medium:'paid_social'},instagram:{source:'instagram',medium:'paid_social'},google_ads:{source:'google',medium:'cpc'},ms_ads:{source:'bing',medium:'cpc'}},
 kanalChanged(){this.kampagneType='';this.oeremaerkeType='nej';this.kampagne='';},
 opdaterKampagnekode(){const d={'feltpartner_nyhedsbrev':'2822','oneoff_nyhedsbrev':'2824'};if(!this.kampagneType)return;if(this.oeremaerkeType==='ja'){if(this.kampagne===d[this.kampagneType])this.kampagne='';}else{this.kampagne=d[this.kampagneType]||'';}},
-tilfoejParametre(u,p){if(!/^https?:\/\//i.test(u))u='https://'+u;const url=new URL(u);const d={'feltpartner_nyhedsbrev':{code:'2822',recurring:'2824'},'oneoff_nyhedsbrev':{code:'2824',recurring:'2822'}};let c=d[this.kampagneType]?.code||'',r=d[this.kampagneType]?.recurring||'';if(this.oeremaerkeType==='ja'&&this.kampagne&&!['2822','2824'].includes(this.kampagne))c=this.kampagne;url.searchParams.set('campaign_code',c);url.searchParams.set('campaign_code_recurring',r);url.searchParams.set('utm_earmarked',this.oeremaerkeType==='ja'?'yes':'no');Object.entries(p).forEach(([k,v])=>v&&url.searchParams.set(k,v));if(this.anker)url.hash=this.anker;return{full:url.toString(),campaign_code:c,campaign_code_recurring:r};},
+
+// 🔧 NY VERSION HER
+tilfoejParametre(u,p){
+  if(!/^https?:\/\//i.test(u)) u = 'https://' + u;
+  const url = new URL(u);
+
+  let campaign_code = '';
+  let campaign_code_recurring = '';
+
+  if (this.oeremaerkeType === 'ja') {
+    if (this.kampagneType === 'feltpartner_nyhedsbrev') {
+      campaign_code = '2822';
+      campaign_code_recurring = this.kampagne || '';
+    } else if (this.kampagneType === 'oneoff_nyhedsbrev') {
+      campaign_code = this.kampagne || '';
+      campaign_code_recurring = '2824';
+    }
+  } else {
+    if (this.kampagneType === 'feltpartner_nyhedsbrev') {
+      campaign_code = '2822';
+      campaign_code_recurring = '2824';
+    } else if (this.kampagneType === 'oneoff_nyhedsbrev') {
+      campaign_code = '2824';
+      campaign_code_recurring = '2822';
+    }
+  }
+
+  url.searchParams.set('campaign_code', campaign_code);
+  url.searchParams.set('campaign_code_recurring', campaign_code_recurring);
+  url.searchParams.set('utm_earmarked', this.oeremaerkeType === 'ja' ? 'yes' : 'no');
+
+  Object.entries(p).forEach(([k,v]) => v && url.searchParams.set(k,v));
+  if (this.anker) url.hash = this.anker;
+
+  return { full:url.toString(), campaign_code, campaign_code_recurring };
+},
+
 genererLinks(){if(!this.basisUrl){this.vis('Indtast en gyldig basis-URL');return;}if(!this.kampagneType){this.vis('Vælg kampagnetype');return;}this.opdaterKampagnekode();this.links=[];for(let v=1;v<=this.antalVersioner;v++){let vi=this.indhold?this.indhold+(this.antalVersioner>1?'_v'+v:''):undefined;const{source:utm_source,medium:utm_medium}=this.kanalMap[this.kanal]||{source:'',medium:''};const p={utm_source,utm_medium,utm_campaign:this.utmCampaign||this.kampagne||'default',utm_content:vi};const r=this.tilfoejParametre(this.basisUrl,p);this.links.push({...p,url:r.full,anker:this.anker||null,campaign_code:r.campaign_code,campaign_code_recurring:r.campaign_code_recurring,statusText:'✅ OK',statusClass:'status-ok'});}this.vis('Links genereret!');},
 kopier(u){navigator.clipboard.writeText(u);this.vis('Kopieret!');},kopierAlle(){navigator.clipboard.writeText(this.links.map(l=>l.url).join('\n'));this.vis('Alle links kopieret!');},aabn(u){window.open(u,'_blank');},vis(m){this.notifikationBesked=m;this.visNotifikation=true;setTimeout(()=>this.visNotifikation=false,2500);},visNotifikation:false,notifikationBesked:''
 };}

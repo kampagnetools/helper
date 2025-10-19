@@ -5,9 +5,9 @@
 <title>Hjælpeværktøj</title>
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.15.0/dist/cdn.min.js" defer></script>
 <style>
-:root{--bg:#f0f0f0;--card-bg:#fff;--text:#1e1e1e;--accent:#e30613;--input-bg:#fff;--input-border:#ccc;--button-bg:#e30613;--button-hover:#c20511;--table-bg:#fff;--table-border:#e5e7eb;--table-th-bg:#f9f9f9;--status-ok:green;}
-body.dark-theme{--bg:#111;--card-bg:#1a1a1a;--text:#fff;--input-bg:#222;--input-border:#444;--table-bg:#1a1a1a;--table-border:#444;--table-th-bg:#222;--status-ok:#0f0;}
-body{display:flex;justify-content:center;align-items:flex-start;min-height:100vh;margin:0;padding-top:60px;background:var(--bg);color:var(--text);font-family:'Segoe UI',Arial,sans-serif;}
+:root{--bg:#f0f0f0;--card-bg:#fff;--text:#1e1e1e;--accent:#e30613;--input-bg:#fff;--input-border:#ccc;--button-bg:#e30613;--button-hover:#c20511;--table-bg:#fff;--table-border:#e5e7eb;--table-th-bg:#f9f9f9;}
+body.dark-theme{--bg:#111;--card-bg:#1a1a1a;--text:#fff;--input-bg:#222;--input-border:#444;--table-bg:#1a1a1a;--table-border:#444;--table-th-bg:#222;}
+body{display:flex;justify-content:center;align-items:flex-start;min-height:100vh;margin:0;padding-top:60px;background:var(--bg);color:var(--text);font-family:'Segoe UI',Arial,sans-serif;overflow-x:hidden;}
 .app{max-width:950px;width:100%;padding:40px;border-radius:12px;background:var(--card-bg);box-sizing:border-box;box-shadow:0 10px 30px rgba(0,0,0,0.08);}
 h2{margin-bottom:24px;color:var(--accent);font-size:34px;font-weight:700;text-transform:uppercase;}
 .theme-switch{position:fixed;top:16px;right:16px;z-index:999;}
@@ -18,38 +18,34 @@ h2{margin-bottom:24px;color:var(--accent);font-size:34px;font-weight:700;text-tr
 input:checked+.slider{background-color:var(--accent);}
 input:checked+.slider::before{transform:translateX(24px);}
 .nav-buttons{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;}
-.nav-buttons button{padding:14px 24px;border:none;border-radius:10px;background:var(--button-bg);color:#fff;cursor:pointer;font-weight:600;font-size:16px;flex:1;min-width:130px;transition:.2s;}
-.nav-buttons button:hover{background:var(--button-hover);}
-.nav-buttons button.active{background:#222;}
-button.secondary{background:var(--button-bg);width:100%;color:#fff;padding:12px;border-radius:10px;font-weight:600;}
+.nav-buttons button{padding:14px 24px;border:none;border-radius:12px;background:var(--button-bg);color:#fff;cursor:pointer;font-weight:600;font-size:16px;flex:1;min-width:130px;transition:.2s, transform .1s;}
+.nav-buttons button:hover{background:var(--button-hover);transform:scale(1.03);}
+.nav-buttons button.active{background:#222;transform:none;}
+button.generate{background:var(--accent);color:#fff;padding:12px 20px;border-radius:12px;border:none;font-size:16px;font-weight:600;cursor:pointer;transition:.2s, transform .1s;display:flex;justify-content:space-between;align-items:center;}
+button.generate:hover{background:#c20511;transform:scale(1.03);}
 .field{margin-bottom:18px;display:flex;flex-direction:column;}
 .field label{font-weight:600;margin-bottom:8px;font-size:16px;}
-input,select,textarea{padding:14px 18px;border:1px solid var(--input-border);border-radius:10px;font-size:16px;width:100%;background:var(--input-bg);color:var(--text);max-width:100%;box-sizing:border-box;}
+input,select,textarea{padding:14px 18px;border:1px solid var(--input-border);border-radius:10px;font-size:16px;width:100%;background:var(--input-bg);color:var(--text);box-sizing:border-box;}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(227,6,19,0.2);}
 select{appearance:none;background:var(--input-bg) url('data:image/svg+xml;utf8,<svg fill="%231e1e1e" height="16" viewBox="0 0 24 24" width="16"><path d="M7 10l5 5 5-5H7z"/></svg>') no-repeat right 20px center;background-size:16px;padding-right:44px;cursor:pointer;}
 textarea{resize:vertical;}
-table{width:100%;border-collapse:collapse;margin-top:20px;font-size:15px;border-radius:8px;overflow:hidden;}
-th,td{border:1px solid var(--table-border);padding:12px;text-align:left;vertical-align:middle;}
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:15px;border-radius:8px;overflow:hidden;}
+th,td{border:1px solid var(--table-border);padding:10px;text-align:left;vertical-align:middle;}
 th{background:var(--table-th-bg);}
-.link-row:nth-child(even){background:var(--table-bg);}
-.link-buttons{display:flex;gap:6px;flex-direction:column;}
+td span{cursor:pointer;text-decoration:underline dotted;transition:.2s;}
+td span:hover{color:var(--accent);}
 .notifikation{position:fixed;bottom:20px;right:20px;background:var(--accent);color:#fff;padding:10px 16px;border-radius:8px;font-size:14px;opacity:0;transition:opacity .3s;z-index:9999;}
 .notifikation.show{opacity:1;}
-.status-ok{color:var(--status-ok);font-weight:600;}
-details{margin-bottom:14px;border:1px solid var(--input-border);border-radius:10px;background:var(--card-bg);overflow:hidden;}
-details[open]{padding:12px 16px;box-shadow:0 4px 15px rgba(0,0,0,.05);}
-summary{cursor:pointer;font-weight:600;color:var(--accent);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;background:var(--bg);border-radius:10px 10px 0 0;}
-summary::after{content:"▼";font-size:12px;transition:.25s;}
-details[open] summary::after{transform:rotate(-180deg);}
-button.generate{background:var(--accent);color:#fff;padding:14px 24px;border-radius:10px;border:none;font-size:16px;font-weight:600;margin-top:10px;cursor:pointer;transition:.2s;}
-button.generate:hover{background:#c20511;}
-.codebox{background:#0f0f0f;color:#0f0;font-family:monospace;padding:14px 18px;border-radius:8px;margin-top:20px;overflow-x:auto;cursor:pointer;white-space:nowrap;}
 .kampagne-controls{display:grid;grid-template-columns:80% 1fr;gap:1rem;}
 .segmented-control{display:flex;border:1.5px solid var(--input-border);border-radius:12px;overflow:hidden;width:100%;max-width:250px;font-weight:600;font-size:1rem;padding:2px 0;}
 .segmented-control button{flex:1;padding:.85rem 0;border:none;background:transparent;color:var(--text);cursor:pointer;transition:.25s;}
 .segmented-control button:not(:last-child){border-right:1.5px solid var(--input-border);}
 .segmented-control button.active{background:var(--accent);color:#fff;}
 input.disabled{background-color:var(--input-bg);color:#888;cursor:not-allowed;opacity:.6;}
+.link-card{padding:16px;border-radius:12px;background:var(--table-bg);margin-bottom:16px;box-shadow:0 4px 10px rgba(0,0,0,0.05);}
+.link-card table{margin-top:8px;}
+.copy-icon{margin-left:4px;color:#888;cursor:pointer;}
+.copy-icon:hover{color:var(--accent);}
 </style>
 </head>
 <body class="dark-theme" x-data="dashboardApp()">
@@ -60,49 +56,157 @@ input.disabled{background-color:var(--input-bg);color:#888;cursor:not-allowed;op
 
 <div class="app">
 <h2>Hjælpeværktøj</h2>
+
 <div class="nav-buttons">
   <button :class="{'active': activeApp==='utm'}" @click="activeApp='utm'">UTM Builder</button>
   <button :class="{'active': activeApp==='sms'}" @click="activeApp='sms'">SMS Tæller</button>
-  <button :class="{'active': activeApp==='utm_extractor'}" @click="activeApp='utm_extractor'">UTM Extractor</button>
+  <button :class="{'active': activeApp==='extractor'}" @click="activeApp='extractor'">UTM Extractor</button>
 </div>
 
+<!-- UTM BUILDER -->
 <div x-show="activeApp==='utm'" x-data="utmBuilder()">
-  <div class="field"><label>Basis-URL</label><input type="url" x-model="basisUrl" placeholder="https://www.msf.dk/stoet/gaza"></div>
-  <div class="field"><label>Kanal</label><select x-model="kanal" @change="kanalChanged()"><option value="">Vælg kanal</option><template x-for="c in ['email','sms','meta','facebook','instagram','google_ads','ms_ads']" :key="c"><option :value="c" x-text="c"></option></template></select></div>
+  <div class="field">
+    <label>Basis-URL</label>
+    <input type="text" x-model="basisUrl" placeholder="www.msf.dk/stoet/gaza">
+  </div>
+
+  <div class="field">
+    <label>Kanal</label>
+    <select x-model="kanal" @change="kanalChanged()">
+      <option value="">Vælg kanal</option>
+      <option value="email">Email</option>
+      <option value="sms">SMS</option>
+      <option value="facebook">Facebook</option>
+      <option value="instagram">Instagram</option>
+      <option value="meta">Meta</option>
+      <option value="google_ads">Google Ads</option>
+      <option value="ms_ads">Microsoft Ads</option>
+    </select>
+  </div>
 
   <div class="kampagne-controls">
-    <div class="field"><label>Kampagnetype</label>
-      <select x-model="kampagneType" @change="opdaterKampagnekode()"><option value="" disabled selected>Vælg kampagnetype</option><option value="feltpartner_nyhedsbrev">Feltpartner nyhedsbrev</option><option value="oneoff_nyhedsbrev">One-off nyhedsbrev</option></select>
+    <div class="field">
+      <label>Kampagnetype</label>
+      <select x-model="kampagneType" @change="opdaterKampagnekode()">
+        <option value="" disabled selected>Vælg kampagnetype</option>
+        <option value="feltpartner_nyhedsbrev">Feltpartner nyhedsbrev</option>
+        <option value="oneoff_nyhedsbrev">One-off nyhedsbrev</option>
+      </select>
     </div>
-    <div class="field"><label>Øremærket</label>
+    <div class="field">
+      <label>Øremærket</label>
       <div class="segmented-control">
-        <button :class="{ 'active': oeremaerkeType==='ja' }" @click="oeremaerkeType='ja'; if(['2822','2824'].includes(kampagne)) kampagne='';">Ja</button>
-        <button :class="{ 'active': oeremaerkeType==='nej' }" @click="oeremaerkeType='nej'">Nej</button>
+        <button :class="{ 'active': oeremaerkeType==='ja' }" @click="setOeremaerke('ja')">Ja</button>
+        <button :class="{ 'active': oeremaerkeType==='nej' }" @click="setOeremaerke('nej')">Nej</button>
       </div>
     </div>
   </div>
 
-  <div class="field"><label x-text="oeremaerkeType==='ja'?'Øremærket kampagnekode':'Kampagnekode'"></label><input type="text" x-model="kampagne" :disabled="oeremaerkeType!=='ja'" :class="{'disabled':oeremaerkeType!=='ja'}" :placeholder="oeremaerkeType==='ja'?'f.eks. 3799':''" @input="kampagne=kampagne.replace(/[^0-9]/g,'').slice(0,4); if(oeremaerkeType==='ja' && ['2822','2824'].includes(kampagne)) kampagne='';"></div>
+  <div class="field">
+    <label>Kampagnekode</label>
+    <input type="text" x-model="kampagne" :disabled="oeremaerkeType==='nej'" :class="{'disabled':oeremaerkeType==='nej'}" placeholder="f.eks. 3799" @input="kampagne=kampagne.replace(/[^0-9]/g,'').slice(0,4)">
+  </div>
 
-  <details>
-    <summary>Tilføj UTM / Indhold / Anker / Versioner</summary>
-    <div class="field"><label>Indhold (utm_content)</label><input type="text" x-model="indhold" placeholder="bannerA, heroCTA"></div>
-    <div class="field"><label>UTM Campaign (overskriv)</label><input type="text" x-model="utmCampaign"></div>
-    <div class="field"><label>Anker</label><select x-model="anker"><option value="">Intet</option><option value="video">Video</option><option value="topbanner">Topbanner</option><option value="footer">Footer</option><option value="gvform">Gravity form</option></select></div>
-    <div class="field"><label>Flere versioner?</label><select x-model="antalVersioner"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
-  </details>
+  <div x-data="{ open:false }" class="field relative">
+  <!-- Knappen -->
+  <button 
+    @click="open = !open" 
+    class="generate" 
+    style="width:100%; transition:background .2s; transform:none;">
+    Flere indstillinger 
+    <span 
+      x-text="open ? '▲' : '▼'" 
+      class="transition-transform duration-300"
+      :class="{'rotate-180': open}"></span>
+  </button>
 
+  <!-- Dropdown panel -->
+  <div 
+    x-show="open" 
+    x-transition:enter="transition ease-out duration-300"
+    x-transition:enter-start="opacity-0 -translate-y-2"
+    x-transition:enter-end="opacity-100 translate-y-0"
+    x-transition:leave="transition ease-in duration-200"
+    x-transition:leave-start="opacity-100 translate-y-0"
+    x-transition:leave-end="opacity-0 -translate-y-2"
+    @click.outside="open=false"
+    class="absolute left-0 mt-2 w-full bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-xl shadow-lg p-4 z-50 flex flex-col gap-4"
+    style="overflow:hidden;"
+  >
+
+    <!-- Indhold (utm_content) -->
+    <div class="field">
+      <label>Indhold (utm_content)</label>
+      <select 
+        x-model="utmContent" 
+        class="transition-colors duration-200 hover:border-accent focus:border-accent focus:ring-1 focus:ring-red-500"
+      >
+        <option value="">Ingen</option>
+        <template x-for="i in antalVersioner" :key="i">
+          <option :value="'v'+i" x-text="'v'+i"></option>
+        </template>
+      </select>
+    </div>
+
+    <!-- Antal versioner -->
+    <div class="field">
+      <label>Antal versioner</label>
+      <select 
+        x-model.number="antalVersioner" 
+        class="transition-colors duration-200 hover:border-accent focus:border-accent focus:ring-1 focus:ring-red-500"
+      >
+        <template x-for="v in 10" :key="v"><option :value="v" x-text="v"></option></template>
+      </select>
+    </div>
+
+    <!-- Anker -->
+    <div class="field">
+      <label>Anker</label>
+      <select 
+        x-model="anker" 
+        class="transition-colors duration-200 hover:border-accent focus:border-accent focus:ring-1 focus:ring-red-500"
+      >
+        <option value="">Ingen</option>
+        <option value="top">top</option>
+        <option value="contact">contact</option>
+        <option value="footer">footer</option>
+      </select>
+    </div>
+
+  </div>
+</div>
   <button class="generate" @click="genererLinks()">Generér links</button>
-  <template x-for="(l,i) in links" :key="i"><div class="codebox" @click="kopier(l.url)" x-text="l.url"></div></template>
-  <div x-show="links.length>1" style="margin-top:10px;"><button class="secondary" @click="kopierAlle()">Kopier alle links</button></div>
 
-  <table x-show="links.length">
-    <thead><tr><th>utm_source</th><th>utm_medium</th><th>utm_campaign</th><th x-show="links[0].utm_content">utm_content</th><th x-show="links[0].anker">Anker</th><th>Status</th><th>Handlinger</th></tr></thead>
-    <tbody><template x-for="(l,i) in links" :key="i"><tr class="link-row"><td x-text="l.utm_source"></td><td x-text="l.utm_medium"></td><td x-text="l.utm_campaign"></td><td x-show="l.utm_content" x-text="l.utm_content"></td><td x-show="l.anker" x-text="l.anker"></td><td :class="l.statusClass" x-text="l.statusText"></td><td><div class="link-buttons"><button class="secondary" @click="aabn(l.url)">Åbn</button></div></td></tr></template></tbody>
-  </table>
+  <template x-if="links.length">
+    <div style="margin-top:12px;">
+      <template x-for="(l,i) in links" :key="i">
+        <div class="link-card">
+          <div class="field">
+            <label>Færdig URL</label>
+            <input type="text" :value="l.url" readonly @click="$clipboard(l.url); vis('URL kopieret!')" style="cursor:pointer;">
+          </div>
+          <table>
+            <thead>
+              <tr><th>Parameter</th><th>Værdi</th></tr>
+            </thead>
+            <tbody>
+              <template x-for="item in Object.keys(l).map(k => ({key:k,value:l[k]}))" :key="item.key">
+                <tr x-show="item.key.startsWith('utm_') || item.key==='anker' || item.key==='utm_campaign_code' || item.key==='utm_campaign_code_recurring'">
+                  <td><span @click="$clipboard(item.key+'='+item.value); vis('Kopieret '+item.key)" x-text="item.key"></span></td>
+                  <td><span @click="$clipboard(item.value); vis('Kopieret')" x-text="item.value"></span></td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+      </template>
+    </div>
+  </template>
+
   <div class="notifikation" :class="{show: visNotifikation}" x-text="notifikationBesked"></div>
 </div>
 
+<!-- SMS COUNTER -->
 <div x-show="activeApp==='sms'" x-data="smsCounter()">
   <div class="field"><label>SMS tekst</label><textarea rows="6" x-model="tekst" placeholder="Skriv din SMS her..."></textarea></div>
   <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
@@ -114,65 +218,119 @@ input.disabled{background-color:var(--input-bg);color:#888;cursor:not-allowed;op
   </div>
 </div>
 
-<div x-show="activeApp==='utm_extractor'" x-data="utmExtractor()">
-  <div class="field"><label>Indsæt URL</label><input type="url" x-model="inputUrl" placeholder="https://..."></div>
+<!-- UTM EXTRACTOR -->
+<div x-show="activeApp==='extractor'" x-data="utmExtractor()">
+  <div class="field"><label>Indsæt URL</label><input type="text" x-model="inputUrl" placeholder="www.msf.dk/..."></div>
   <button class="generate" @click="extractUTM()">Hent UTM</button>
-  <table x-show="utmParams.length">
-    <thead><tr><th>Param</th><th>Value</th></tr></thead>
-    <tbody><template x-for="(p,i) in utmParams" :key="i"><tr><td x-text="p.key"></td><td x-text="p.value"></td></tr></template></tbody>
-  </table>
+  
+  <template x-if="utmParams.length">
+    <table style="margin-top:12px;">
+      <thead><tr><th>Parameter</th><th>Værdi</th></tr></thead>
+      <tbody>
+        <template x-for="(p,i) in utmParams" :key="i">
+          <tr>
+            <td><span @click="$clipboard(p.key+'='+p.value); vis('Kopieret '+p.key)" x-text="p.key"></span></td>
+            <td><span @click="$clipboard(p.value); vis('Kopieret')" x-text="p.value"></span></td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+  </template>
   <div class="notifikation" :class="{show: visNotifikation}" x-text="notifikationBesked"></div>
 </div>
 
 <script>
 function dashboardApp(){return {activeApp:'utm'};}
-function utmBuilder(){return {
-basisUrl:'',kanal:'',kampagne:'',kampagneType:'',indhold:'',utmCampaign:'',anker:'',oeremaerkeType:'nej',links:[],antalVersioner:1,
-kanalMap:{email:{source:'sfmc',medium:'email'},sms:{source:'sfmc',medium:'sms'},meta:{source:'meta',medium:'paid_social'},facebook:{source:'facebook',medium:'paid_social'},instagram:{source:'instagram',medium:'paid_social'},google_ads:{source:'google',medium:'cpc'},ms_ads:{source:'bing',medium:'cpc'}},
-kanalChanged(){this.kampagneType='';this.oeremaerkeType='nej';this.kampagne='';},
-opdaterKampagnekode(){const d={'feltpartner_nyhedsbrev':'2822','oneoff_nyhedsbrev':'2824'};if(!this.kampagneType)return;if(this.oeremaerkeType==='ja'){if(this.kampagne===d[this.kampagneType])this.kampagne='';}else{this.kampagne=d[this.kampagneType]||'';}},
 
-// 🔧 NY VERSION HER
-tilfoejParametre(u,p){
-  if(!/^https?:\/\//i.test(u)) u = 'https://' + u;
-  const url = new URL(u);
+function utmBuilder(){
+  return {
+    basisUrl:'', kanal:'', kampagne:'', kampagneType:'', utmContent:'', anker:'', 
+    oeremaerkeType:'nej', links:[], antalVersioner:1, previousAnchors:{},
+    kanalMap:{ email:{source:'sfmc',medium:'email'}, sms:{source:'sfmc',medium:'sms'},
+               meta:{source:'meta',medium:'paid_social'}, facebook:{source:'facebook',medium:'paid_social'},
+               instagram:{source:'instagram',medium:'paid_social'}, google_ads:{source:'google',medium:'cpc'},
+               ms_ads:{source:'bing',medium:'cpc'} },
+    kanalChanged(){ this.kampagneType=''; this.oeremaerkeType='nej'; this.kampagne=''; this.links=[]; },
+    opdaterKampagnekode(){ if(this.oeremaerkeType==='nej'){ this.kampagne=''; } },
+    setOeremaerke(val){ this.oeremaerkeType=val; this.links=[]; if(val==='ja'){ this.kampagne=''; } else { this.kampagne=''; } },
+    tilfoejParametre(u,p){ if(!/^https?:\/\//i.test(u)) u='https://'+u; const url=new URL(u); Object.entries(p).forEach(([k,v])=>v&&url.searchParams.set(k,v)); return url.toString(); },
+    genererLinks(){
+      if(!this.basisUrl){ this.vis('Indtast en gyldig basis-URL'); return; }
+      if(!this.kanal){ this.vis('Vælg kanal'); return; }
+      if(!this.kampagneType){ this.vis('Vælg kampagnetype'); return; }
+      if(this.oeremaerkeType==='ja' && !this.kampagne){ this.vis('Udfyld kampagnekode for øremærket kampagne'); return; }
 
-  let campaign_code = '';
-  let campaign_code_recurring = '';
+      this.links=[];
+      for(let v=1; v<=this.antalVersioner; v++){
+        let content = this.utmContent || ((this.antalVersioner>1)?'v'+v:'');
+        const {source:utm_source, medium:utm_medium} = this.kanalMap[this.kanal] || {source:'',medium:''};
+        const versionAnker = this.previousAnchors[v] || this.anker || '';
+        this.previousAnchors[v] = versionAnker;
 
-  if (this.oeremaerkeType === 'ja') {
-    if (this.kampagneType === 'feltpartner_nyhedsbrev') {
-      campaign_code = '2822';
-      campaign_code_recurring = this.kampagne || '';
-    } else if (this.kampagneType === 'oneoff_nyhedsbrev') {
-      campaign_code = this.kampagne || '';
-      campaign_code_recurring = '2824';
-    }
-  } else {
-    if (this.kampagneType === 'feltpartner_nyhedsbrev') {
-      campaign_code = '2822';
-      campaign_code_recurring = '2824';
-    } else if (this.kampagneType === 'oneoff_nyhedsbrev') {
-      campaign_code = '2824';
-      campaign_code_recurring = '2822';
-    }
-  }
+        let utm_campaign_code = '2822';
+        let utm_campaign_code_recurring = '2824';
 
-  url.searchParams.set('campaign_code', campaign_code);
-  url.searchParams.set('campaign_code_recurring', campaign_code_recurring);
-  url.searchParams.set('utm_earmarked', this.oeremaerkeType === 'ja' ? 'yes' : 'no');
+        if(this.oeremaerkeType==='ja' && this.kampagne){
+          if(this.kampagneType==='oneoff_nyhedsbrev'){
+            utm_campaign_code = this.kampagne;        // overskriv one-off
+            utm_campaign_code_recurring = '2824';     // beholder standard recurring
+          } else if(this.kampagneType==='feltpartner_nyhedsbrev'){
+            utm_campaign_code = '2822';               // beholder standard one-off
+            utm_campaign_code_recurring = this.kampagne; // overskriv recurring
+          }
+        }
 
-  Object.entries(p).forEach(([k,v]) => v && url.searchParams.set(k,v));
-  if (this.anker) url.hash = this.anker;
+        const p = {
+          utm_source,
+          utm_medium,
+          utm_campaign: utm_campaign_code,
+          utm_content: content,
+          utm_earmarked: this.oeremaerkeType==='ja'?'yes':'no',
+          anker: versionAnker
+        };
 
-  return { full:url.toString(), campaign_code, campaign_code_recurring };
-},
+        const urlParams = {...p, utm_campaign_code, utm_campaign_code_recurring};
+        let finalUrl = this.tilfoejParametre(this.basisUrl, urlParams);
+        if(versionAnker) finalUrl += `#${versionAnker}`;
+        this.links.push({...p, url:finalUrl});
+      }
+      this.vis('Links genereret');
+    },
+    vis(b){this.notifikationBesked=b;this.visNotifikation=true;setTimeout(()=>this.visNotifikation=false,2000);},
+    $clipboard(v){navigator.clipboard.writeText(v);},
+    visNotifikation:false, notifikationBesked:''
+  };
+}
 
-genererLinks(){if(!this.basisUrl){this.vis('Indtast en gyldig basis-URL');return;}if(!this.kampagneType){this.vis('Vælg kampagnetype');return;}this.opdaterKampagnekode();this.links=[];for(let v=1;v<=this.antalVersioner;v++){let vi=this.indhold?this.indhold+(this.antalVersioner>1?'_v'+v:''):undefined;const{source:utm_source,medium:utm_medium}=this.kanalMap[this.kanal]||{source:'',medium:''};const p={utm_source,utm_medium,utm_campaign:this.utmCampaign||this.kampagne||'default',utm_content:vi};const r=this.tilfoejParametre(this.basisUrl,p);this.links.push({...p,url:r.full,anker:this.anker||null,campaign_code:r.campaign_code,campaign_code_recurring:r.campaign_code_recurring,statusText:'✅ OK',statusClass:'status-ok'});}this.vis('Links genereret!');},
-kopier(u){navigator.clipboard.writeText(u);this.vis('Kopieret!');},kopierAlle(){navigator.clipboard.writeText(this.links.map(l=>l.url).join('\n'));this.vis('Alle links kopieret!');},aabn(u){window.open(u,'_blank');},vis(m){this.notifikationBesked=m;this.visNotifikation=true;setTimeout(()=>this.visNotifikation=false,2500);},visNotifikation:false,notifikationBesked:''
+function smsCounter(){return {
+  tekst:'',
+  get antalTegn(){return this.tekst.length;},
+  get antalSms(){return this.tekst.length===0?0:Math.ceil(this.tekst.length/160);}
 };}
-function smsCounter(){return {tekst:'',get antalTegn(){return this.tekst.length;},get antalSms(){const l=this.tekst.length;return l===0?0:l<=160?1:Math.ceil(l/153);}}}
-function utmExtractor(){return {inputUrl:'',utmParams:[],visNotifikation:false,notifikationBesked:'',extractUTM(){if(!this.inputUrl){this.showNotification('Indsæt en gyldig URL');return;}try{const u=new URL(this.inputUrl),p=[];u.searchParams.forEach((v,k)=>{if(k.startsWith('utm_'))p.push({key:k,value:v});});this.utmParams=p.length?p:[{key:'Ingen UTM parametre',value:'-'}];this.showNotification('UTM parametre hentet!');}catch(e){this.showNotification('Ugyldig URL');this.utmParams=[];}},showNotification(m){this.notifikationBesked=m;this.visNotifikation=true;setTimeout(()=>this.visNotifikation=false,2500);}}}
+
+function utmExtractor(){return {
+  inputUrl:'',utmParams:[],visNotifikation:false,notifikationBesked:'',
+  extractUTM(){
+    if(!this.inputUrl){this.vis('Indsæt en gyldig URL'); return;}
+    try{
+      const u=/^https?:\/\//i.test(this.inputUrl)?this.inputUrl:'https://'+this.inputUrl;
+      const url=new URL(u); 
+      this.utmParams=[];
+      url.searchParams.forEach((v,k)=>{
+        if(k.startsWith('utm_') || k==='anker' || k==='utm_campaign_code' || k==='utm_campaign_code_recurring'){
+          this.utmParams.push({key:k,value:v});
+        }
+      });
+      if(!this.utmParams.length) this.utmParams=[{key:'Ingen UTM parametre',value:'-'}];
+      this.vis('UTM parametre hentet');
+    }catch(e){
+      this.vis('Ugyldig URL'); 
+      this.utmParams=[];
+    }
+  },
+  vis(b){this.notifikationBesked=b;this.visNotifikation=true;setTimeout(()=>this.visNotifikation=false,2000);},
+  $clipboard(v){navigator.clipboard.writeText(v);}
+};}
 </script>
 </body>
 </html>

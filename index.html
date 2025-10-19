@@ -1,52 +1,69 @@
 <!DOCTYPE html>
 <html lang="da">
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
+<title>Hjælpeværktøj</title>
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.15.0/dist/cdn.min.js" defer></script>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hjælpeværktøj</title>
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.15.0/dist/cdn.min.js" defer></script>
 <style>
 :root{--bg:#f0f0f0;--card-bg:#fff;--text:#1e1e1e;--accent:#e30613;--input-bg:#fff;--input-border:#ccc;--button-bg:#e30613;--button-hover:#c20511;--table-bg:#fff;--table-border:#e5e7eb;--table-th-bg:#f9f9f9;}
 body.dark-theme{--bg:#111;--card-bg:#1a1a1a;--text:#fff;--input-bg:#222;--input-border:#444;--table-bg:#1a1a1a;--table-border:#444;--table-th-bg:#222;}
 body{display:flex;justify-content:center;align-items:flex-start;min-height:100vh;margin:0;padding-top:60px;background:var(--bg);color:var(--text);font-family:'Segoe UI',Arial,sans-serif;overflow-x:hidden;}
-.app{max-width:950px;width:100%;padding:40px;border-radius:12px;background:var(--card-bg);box-sizing:border-box;box-shadow:0 10px 30px rgba(0,0,0,0.08);}
-h2{margin-bottom:24px;color:var(--accent);font-size:34px;font-weight:700;text-transform:uppercase;}
+.app{max-width:950px;width:90%;padding:20px 30px;border-radius:12px;background:var(--card-bg);box-sizing:border-box;box-shadow:0 10px 30px rgba(0,0,0,0.08);}
+h2{margin-bottom:24px;color:var(--accent);font-size:2.2rem;font-weight:700;text-transform:uppercase;}
 .theme-switch{position:fixed;top:16px;right:16px;z-index:999;}
-.switch{position:relative;display:inline-block;width:50px;height:26px;}
-.switch input{opacity:0;width:0;height:0;}
-.slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#ccc;transition:.4s;border-radius:34px;}
-.slider::before{position:absolute;content:"";height:20px;width:20px;left:3px;bottom:3px;background:#fff;transition:.4s;border-radius:50%;}
-input:checked+.slider{background-color:var(--accent);}
-input:checked+.slider::before{transform:translateX(24px);}
 .nav-buttons{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;}
-.nav-buttons button{padding:14px 24px;border:none;border-radius:12px;background:var(--button-bg);color:#fff;cursor:pointer;font-weight:600;font-size:16px;flex:1;min-width:130px;transition:.2s, transform .1s;}
+.nav-buttons button{padding:12px 20px;flex:1;min-width:120px;border:none;border-radius:12px;background:var(--button-bg);color:#fff;cursor:pointer;font-weight:600;font-size:16px;transition:.2s, transform .1s;}
 .nav-buttons button:hover{background:var(--button-hover);transform:scale(1.03);}
 .nav-buttons button.active{background:#222;transform:none;}
-button.generate{background:var(--accent);color:#fff;padding:12px 20px;border-radius:12px;border:none;font-size:16px;font-weight:600;cursor:pointer;transition:.2s, transform .1s;display:flex;justify-content:space-between;align-items:center;}
-button.generate:hover{background:#c20511;transform:scale(1.03);}
-.field{margin-bottom:18px;display:flex;flex-direction:column;}
-.field label{font-weight:600;margin-bottom:8px;font-size:16px;}
-input,select,textarea{padding:14px 18px;border:1px solid var(--input-border);border-radius:10px;font-size:16px;width:100%;background:var(--input-bg);color:var(--text);box-sizing:border-box;}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(227,6,19,0.2);}
-select{appearance:none;background:var(--input-bg) url('data:image/svg+xml;utf8,<svg fill="%231e1e1e" height="16" viewBox="0 0 24 24" width="16"><path d="M7 10l5 5 5-5H7z"/></svg>') no-repeat right 20px center;background-size:16px;padding-right:44px;cursor:pointer;}
+.kampagne-controls{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:12px;}
+.field{margin-bottom:16px;display:flex;flex-direction:column;}
+.field label{font-weight:600;margin-bottom:6px;font-size:16px;}
+input,select,textarea{padding:12px 14px;border:1px solid var(--input-border);border-radius:10px;font-size:16px;width:100%;background:var(--input-bg);color:var(--text);box-sizing:border-box;}
+select{appearance:none;background:var(--input-bg) url('data:image/svg+xml;utf8,<svg fill="%231e1e1e" height="16" viewBox="0 0 24 24" width="16"><path d="M7 10l5 5 5-5H7z"/></svg>') no-repeat right 16px center;background-size:16px;padding-right:40px;cursor:pointer;}
 textarea{resize:vertical;}
-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:15px;border-radius:8px;overflow:hidden;}
-th,td{border:1px solid var(--table-border);padding:10px;text-align:left;vertical-align:middle;}
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px;border-radius:8px;overflow:hidden;}
+th,td{border:1px solid var(--table-border);padding:8px;text-align:left;vertical-align:middle;}
 th{background:var(--table-th-bg);}
-td span{cursor:pointer;text-decoration:underline dotted;transition:.2s;}
-td span:hover{color:var(--accent);}
-.notifikation{position:fixed;bottom:20px;right:20px;background:var(--accent);color:#fff;padding:10px 16px;border-radius:8px;font-size:14px;opacity:0;transition:opacity .3s;z-index:9999;}
-.notifikation.show{opacity:1;}
-.kampagne-controls{display:grid;grid-template-columns:80% 1fr;gap:1rem;}
+.link-card{padding:16px;border-radius:12px;background:var(--table-bg);margin-bottom:16px;box-shadow:0 4px 10px rgba(0,0,0,0.05);}
+.generate{background:var(--accent);color:#fff;padding:12px 20px;border-radius:12px;border:none;font-size:16px;font-weight:600;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:.2s, transform .1s;width:100%;}
+.generate:hover{background:#c20511;transform:scale(1.03);}
 .segmented-control{display:flex;border:1.5px solid var(--input-border);border-radius:12px;overflow:hidden;width:100%;max-width:250px;font-weight:600;font-size:1rem;padding:2px 0;}
-.segmented-control button{flex:1;padding:.85rem 0;border:none;background:transparent;color:var(--text);cursor:pointer;transition:.25s;}
+.segmented-control button{flex:1;padding:.75rem 0;border:none;background:transparent;color:var(--text);cursor:pointer;transition:.25s;}
 .segmented-control button:not(:last-child){border-right:1.5px solid var(--input-border);}
 .segmented-control button.active{background:var(--accent);color:#fff;}
 input.disabled{background-color:var(--input-bg);color:#888;cursor:not-allowed;opacity:.6;}
-.link-card{padding:16px;border-radius:12px;background:var(--table-bg);margin-bottom:16px;box-shadow:0 4px 10px rgba(0,0,0,0.05);}
-.link-card table{margin-top:8px;}
 .copy-icon{margin-left:4px;color:#888;cursor:pointer;}
 .copy-icon:hover{color:var(--accent);}
+.notifikation{position:fixed;bottom:20px;right:20px;background:var(--accent);color:#fff;padding:10px 16px;border-radius:8px;font-size:14px;opacity:0;transition:opacity .3s;z-index:9999;}
+.notifikation.show{opacity:1;}
+
+/* Responsive adjustments */
+@media (max-width:768px){
+  .kampagne-controls{grid-template-columns:1fr;gap:0.75rem;}
+  .nav-buttons{display:none;} /* hide default nav buttons */
+  .nav-segmented{display:flex;width:100%;margin-bottom:20px;border:1.5px solid var(--input-border);border-radius:12px;overflow:hidden;}
+  .nav-segmented button{flex:1;padding:10px;font-weight:600;border:none;background:transparent;color:var(--text);cursor:pointer;transition:.25s;}
+  .nav-segmented button.active{background:var(--accent);color:#fff;}
+  .app{padding:20px;}
+  h2{font-size:1.8rem;}
+  table{font-size:13px;}
+}
+
+@media (max-width:480px){
+  .segmented-control{font-size:0.9rem;}
+  input,select,textarea{font-size:14px;padding:10px;}
+  .generate{font-size:14px;padding:10px;}
+  h2{font-size:1.5rem;}
+}
 </style>
+
+
 </head>
 <body class="dark-theme" x-data="dashboardApp()">
 
@@ -62,6 +79,13 @@ input.disabled{background-color:var(--input-bg);color:#888;cursor:not-allowed;op
   <button :class="{'active': activeApp==='sms'}" @click="activeApp='sms'">SMS Tæller</button>
   <button :class="{'active': activeApp==='extractor'}" @click="activeApp='extractor'">UTM Extractor</button>
 </div>
+
+<div class="nav-segmented" x-show="window.innerWidth<=768">
+  <button :class="{'active': activeApp==='utm'}" @click="activeApp='utm'">UTM</button>
+  <button :class="{'active': activeApp==='sms'}" @click="activeApp='sms'">SMS</button>
+  <button :class="{'active': activeApp==='extractor'}" @click="activeApp='extractor'">Extractor</button>
+</div>
+
 
 <!-- UTM BUILDER -->
 <div x-show="activeApp==='utm'" x-data="utmBuilder()">

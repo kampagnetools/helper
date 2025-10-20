@@ -81,7 +81,6 @@ input.disabled{background-color:var(--input-bg);color:#888;cursor:not-allowed;op
   <button :class="{'active': activeApp==='extractor'}" @click="activeApp='extractor'">Extractor</button>
 </div>
 
-<!-- UTM BUILDER -->
 <div x-show="activeApp==='utm'" x-data="utmBuilder()">
   <div class="field">
     <label>Basis-URL</label>
@@ -211,7 +210,6 @@ input.disabled{background-color:var(--input-bg);color:#888;cursor:not-allowed;op
   <div class="notifikation" :class="{show: visNotifikation}" x-text="notifikationBesked"></div>
 </div>
 
-<!-- SMS COUNTER -->
 <div x-show="activeApp==='sms'" x-data="smsCounter()">
   <div class="field"><label>SMS tekst</label><textarea rows="6" x-model="tekst" placeholder="Skriv din SMS her..."></textarea></div>
   <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
@@ -223,7 +221,6 @@ input.disabled{background-color:var(--input-bg);color:#888;cursor:not-allowed;op
   </div>
 </div>
 
-<!-- UTM EXTRACTOR -->
 <div x-show="activeApp==='extractor'" x-data="utmExtractor()">
   <div class="field"><label>Indsæt URL</label><input type="text" x-model="inputUrl" placeholder="www.msf.dk/..."></div>
   <button class="generate" @click="extractUTM()">Hent UTM</button>
@@ -250,7 +247,6 @@ function dashboardApp() {
     return { activeApp: 'utm' };
 }
 
-/* UTM Builder */
 function utmBuilder() {
     return {
         basisUrl: '',
@@ -316,7 +312,6 @@ function utmBuilder() {
                 const utm_source = kanalInfo?.source || '';
                 const utm_medium = kanalInfo?.medium || '';
 
-                // Standardized UTM parameters
                 const utm_campaign_code = (this.oeremaerkeType === 'ja' && this.kampagneType === 'oneoff_nyhedsbrev') ? this.kampagne : '2822';
                 const utm_campaign_code_recurring = (this.oeremaerkeType === 'ja' && this.kampagneType === 'feltpartner_nyhedsbrev') ? this.kampagne : '2824';
 
@@ -345,7 +340,6 @@ function utmBuilder() {
     };
 }
 
-/* SMS Counter */
 function smsCounter() {
     return {
         tekst: '',
@@ -354,7 +348,6 @@ function smsCounter() {
     };
 }
 
-/* UTM Extractor */
 function utmExtractor() {
     return {
         inputUrl: '',

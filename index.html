@@ -264,31 +264,24 @@ input.disabled{background-color:var(--input-bg);color:#888;cursor:not-allowed;op
 </div>
 
 <script>
+function dashboardApp(){return {activeApp:'utm'};}
+
 function utmBuilder(){
-  return {
-    basisUrl:'', kanal:'', kampagne:'', kampagneType:'', utmContent:'', anker:'', 
-    oeremaerkeType:'nej', links:[], antalVersioner:1, previousAnchors:{},
-    kanalMap:{
-      'Email og SMS': {
-        email:{source:'sfmc',medium:'email'},
-        sms:{source:'sfmc',medium:'sms'}
-      },
-      'Meta Paid': {
-        meta:{source:'meta',medium:'paid_social'},
-        facebook:{source:'facebook',medium:'paid_social'},
-        instagram:{source:'instagram',medium:'paid_social'}
-      },
-      'Meta Organic': {
-        meta:{source:'meta',medium:'organic_social'},
-        facebook:{source:'facebook',medium:'organic_social'},
-        instagram:{source:'instagram',medium:'organic_social'}
-      },
-      'Andre kanaler': {
-        google_ads:{source:'google',medium:'cpc'},
-        ms_ads:{source:'bing',medium:'cpc'}
-      }
-    },
-    utmDefaults:{utm_campaign:'default_campaign', utm_content:'default_content', utm_earmarked:'no'},
+return {
+basisUrl:'', kanal:'', kampagne:'', kampagneType:'', utmContent:'', anker:'',
+oeremaerkeType:'nej', links:[], antalVersioner:1, previousAnchors:{},
+kanalMap:{
+email:{source:'sfmc',medium:'email'},
+sms:{source:'sfmc',medium:'sms'},
+meta_paid:{source:'meta',medium:'paid_social'},
+facebook_paid:{source:'facebook',medium:'paid_social'},
+instagram_paid:{source:'instagram',medium:'paid_social'},
+meta_organic:{source:'meta',medium:'organic_social'},
+facebook_organic:{source:'facebook',medium:'organic_social'},
+instagram_organic:{source:'instagram',medium:'organic_social'},
+google_ads:{source:'google',medium:'cpc'},
+ms_ads:{source:'bing',medium:'cpc'}
+},
     kanalChanged(){ this.kampagneType=''; this.oeremaerkeType='nej'; this.kampagne=''; this.links=[]; },
     opdaterKampagnekode(){ if(this.oeremaerkeType==='nej'){ this.kampagne=''; } },
     setOeremaerke(val){ this.oeremaerkeType=val; this.links=[]; if(val==='ja'){ this.kampagne=''; } else { this.kampagne=''; } },

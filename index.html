@@ -6,58 +6,7 @@
 <title>Hjælpeværktøj</title>
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.15.0/dist/cdn.min.js" defer></script>
 <style>
-:root{--bg:#f0f0f0;--card-bg:#fff;--text:#1e1e1e;--accent:#e30613;--input-bg:#fff;--input-border:#ccc;--button-bg:#e30613;--button-hover:#c20511;--table-bg:#fff;--table-border:#e5e7eb;--table-th-bg:#f9f9f9;}
-body.dark-theme{--bg:#111;--card-bg:#1a1a1a;--text:#fff;--input-bg:#222;--input-border:#444;--table-bg:#1a1a1a;--table-border:#444;--table-th-bg:#222;}
-body{display:flex;justify-content:center;align-items:flex-start;min-height:100vh;margin:0;padding-top:60px;background:var(--bg);color:var(--text);font-family:'Segoe UI',Arial,sans-serif;overflow-x:hidden;}
-.app{max-width:950px;width:90%;padding:20px 30px;border-radius:12px;background:var(--card-bg);box-sizing:border-box;box-shadow:0 10px 30px rgba(0,0,0,0.08);}
-h2{margin-bottom:24px;color:var(--accent);font-size:2.2rem;font-weight:700;text-transform:uppercase;}
-.theme-switch{position:fixed;top:16px;right:16px;z-index:999;}
-.nav-buttons{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;}
-.nav-buttons button{padding:12px 20px;flex:1;min-width:120px;border:none;border-radius:12px;background:var(--button-bg);color:#fff;cursor:pointer;font-weight:600;font-size:16px;transition:.2s, transform .1s;}
-.nav-buttons button:hover{background:var(--button-hover);transform:scale(1.03);}
-.nav-buttons button.active{background:#222;transform:none;}
-.kampagne-controls{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:12px;}
-.field{margin-bottom:16px;display:flex;flex-direction:column;}
-.field label{font-weight:600;margin-bottom:6px;font-size:16px;}
-input,select,textarea{padding:12px 14px;border:1px solid var(--input-border);border-radius:10px;font-size:16px;width:100%;background:var(--input-bg);color:var(--text);box-sizing:border-box;}
-select{appearance:none;background:var(--input-bg) url('data:image/svg+xml;utf8,<svg fill="%231e1e1e" height="16" viewBox="0 0 24 24" width="16"><path d="M7 10l5 5 5-5H7z"/></svg>') no-repeat right 16px center;background-size:16px;padding-right:40px;cursor:pointer;}
-textarea{resize:vertical;}
-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px;border-radius:8px;overflow:hidden;}
-th,td{border:1px solid var(--table-border);padding:8px;text-align:left;vertical-align:middle;}
-th{background:var(--table-th-bg);}
-.link-card{padding:16px;border-radius:12px;background:var(--table-bg);margin-bottom:16px;box-shadow:0 4px 10px rgba(0,0,0,0.05);}
-.generate{background:var(--accent);color:#fff;padding:12px 20px;border-radius:12px;border:none;font-size:16px;font-weight:600;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:.2s, transform .1s;width:100%;}
-.generate:hover{background:#c20511;}
-.segmented-control{display:flex;border:1.5px solid var(--input-border);border-radius:12px;overflow:hidden;width:100%;max-width:100%;font-weight:600;font-size:1rem;padding:2px 0;}
-.segmented-control button{flex:1;padding:.75rem 0;border:none;background:transparent;color:var(--text);cursor:pointer;transition:.25s;}
-.segmented-control button:not(:last-child){border-right:1.5px solid var(--input-border);}
-.segmented-control button.active{background:var(--accent);color:#fff;}
-input.disabled{background-color:var(--input-bg);color:#888;cursor:not-allowed;opacity:.6;}
-.copy-icon{margin-left:4px;color:#888;cursor:pointer;}
-.copy-icon:hover{color:var(--accent);}
-.notifikation{position:fixed;bottom:20px;right:20px;background:var(--accent);color:#fff;padding:10px 16px;border-radius:8px;font-size:14px;opacity:0;transition:opacity .3s;z-index:9999;}
-.notifikation.show{opacity:1;}
-
-
-/* Responsive adjustments */
-@media (max-width:768px){
-  .kampagne-controls{grid-template-columns:1fr;gap:0.75rem;}
-  .nav-buttons{display:none;} /* hide default nav buttons */
-  .nav-segmented{display:flex;width:100%;margin-bottom:20px;border:1.5px solid var(--input-border);border-radius:12px;overflow:hidden;}
-  .nav-segmented button{flex:1;padding:10px;font-weight:600;border:none;background:transparent;color:var(--text);cursor:pointer;transition:.25s;}
-  .nav-segmented button.active{background:var(--accent);color:#fff;}
-  .app{padding:20px;}
-  h2{font-size:1.8rem;}
-  table{font-size:13px;}
-}
-
-@media (max-width:480px){
-  .segmented-control{font-size:0.9rem;}
-  input,select,textarea{font-size:14px;padding:10px;}
-  .generate{font-size:14px;padding:10px;}
-  h2{font-size:1.5rem;}
-  
-}
+:root {--bg: #f0f0f0;--card-bg: #fff;--text: #1e1e1e;--accent: #e30613;--input-bg: #fff;--input-border: #ccc;--button-bg: #e30613;--button-hover: #c20511;--table-bg: #fff;--table-border: #e5e7eb;--table-th-bg: #f9f9f9;}body.dark-theme {--bg: #111;--card-bg: #1a1a1a;--text: #fff;--input-bg: #222;--input-border: #444;--table-bg: #1a1a1a;--table-border: #444;--table-th-bg: #222;}body {display: flex;justify-content: center;align-items: flex-start;min-height: 100vh;margin: 0;padding-top: 60px;background: var(--bg);color: var(--text);font-family: 'Segoe UI', Arial, sans-serif;overflow-x: hidden;}.app {max-width: 950px;width: 90%;padding: 20px 30px;border-radius: 12px;background: var(--card-bg);box-sizing: border-box;box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);}h2 {margin-bottom: 24px;color: var(--accent);font-size: 2.2rem;font-weight: 700;text-transform: uppercase;}.theme-switch {position: fixed;top: 16px;right: 16px;z-index: 999;}.nav-buttons {display: flex;gap: 12px;margin-bottom: 20px;flex-wrap: wrap;}.nav-buttons button {padding: 12px 20px;flex: 1;min-width: 120px;border: none;border-radius: 12px;background: var(--button-bg);color: #fff;cursor: pointer;font-weight: 600;font-size: 16px;transition: 0.2s, transform 0.1s;}.nav-buttons button:hover {background: var(--button-hover);transform: scale(1.03);}.nav-buttons button.active {background: #222;transform: none;}.kampagne-controls {display: grid;grid-template-columns: 1fr 1fr;gap: 1rem;margin-bottom: 12px;}.field {margin-bottom: 16px;display: flex;flex-direction: column;}.field label {font-weight: 600;margin-bottom: 6px;font-size: 16px;}input, select, textarea {padding: 12px 14px;border: 1px solid var(--input-border);border-radius: 10px;font-size: 16px;width: 100%;background: var(--input-bg);color: var(--text);box-sizing: border-box;}select {appearance: none;background: var(--input-bg) url('data:image/svg+xml;utf8,<svg fill="%231e1e1e" height="16" viewBox="0 0 24 24" width="16"><path d="M7 10l5 5 5-5H7z"/></svg>') no-repeat right 16px center;background-size: 16px;padding-right: 40px;cursor: pointer;}textarea {resize: vertical;}table {width: 100%;border-collapse: collapse;margin-top: 10px;font-size: 14px;border-radius: 8px;overflow: hidden;}th, td {border: 1px solid var(--table-border);padding: 8px;text-align: left;vertical-align: middle;}th {background: var(--table-th-bg);}.link-card {padding: 16px;border-radius: 12px;background: var(--table-bg);margin-bottom: 16px;box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);}.generate {background: var(--accent);color: #fff;padding: 12px 20px;border-radius: 12px;border: none;font-size: 16px;font-weight: 600;cursor: pointer;display: flex;justify-content: space-between;align-items: center;transition: 0.2s, transform 0.1s;width: 100%;}.generate:hover {background: #c20511;}input.disabled {background-color: var(--input-bg);color: #888;cursor: not-allowed;opacity: 0.6;}.copy-icon {margin-left: 4px;color: #888;cursor: pointer;}.copy-icon:hover {color: var(--accent);}.notifikation {position: fixed;bottom: 20px;right: 20px;background: var(--accent);color: #fff;padding: 10px 16px;border-radius: 8px;font-size: 14px;opacity: 0;transition: opacity 0.3s;z-index: 9999;}.notifikation.show {opacity: 1;}.segmented-control, .nav-segmented {display: flex;width: 100%;border: 2px solid var(--input-border);border-radius: 12px;overflow: hidden;font-weight: 600;background: var(--card-bg);}.segmented-control button, .nav-segmented button {flex: 1;padding: 0.65rem 0;border: none;background: var(--card-bg);color: var(--text);cursor: pointer;transition: background 0.2s, color 0.2s;}.segmented-control button + button, .nav-segmented button + button {border-left: 1px solid var(--input-border);}.segmented-control button.active, .nav-segmented button.active {background: var(--accent);color: #fff;font-weight: 700;}.segmented-control button:first-child, .nav-segmented button:first-child {border-top-left-radius: 10px;border-bottom-left-radius: 10px;}.segmented-control button:last-child, .nav-segmented button:last-child {border-top-right-radius: 10px;border-bottom-right-radius: 10px;}.segmented-control button:not(.active):hover, .nav-segmented button:not(.active):hover {background: rgba(227, 6, 19, 0.1);}.expandable-panel {position: absolute;left: 0;margin-top: 8px;width: 100%;background: var(--card-bg);border: 1px solid var(--input-border);border-radius: 12px;box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);padding: 16px;overflow: hidden;z-index: 50;}@media (max-width: 768px) {.kampagne-controls {grid-template-columns: 1fr;gap: 0.75rem;}.nav-buttons {display: none;}.app {padding: 20px;}h2 {font-size: 1.8rem;}table {font-size: 13px;}}@media (max-width: 480px) {.segmented-control, .nav-segmented {font-size: 0.9rem;}input, select, textarea {font-size: 14px;padding: 10px;}.generate {font-size: 14px;padding: 10px;}h2 {font-size: 1.5rem;}}.absolute.left-0.mt-2.w-full.bg-white.dark\:bg-gray-900.border.border-gray-300.dark\:border-gray-700.rounded-xl.shadow-lg.p-4.z-50.flex.flex-col.gap-4 {margin-top: 20px;}
 </style>
 </head>
 <body class="dark-theme" x-data="dashboardApp()">
@@ -162,14 +111,12 @@ input.disabled{background-color:var(--input-bg);color:#888;cursor:not-allowed;op
           </template>
         </select>
       </div>
-
       <div class="field">
         <label>Antal versioner</label>
         <select x-model.number="antalVersioner">
           <template x-for="v in 10" :key="v"><option :value="v" x-text="v"></option></template>
         </select>
       </div>
-
       <div class="field">
         <label>Anker</label>
         <select x-model="anker">
@@ -181,9 +128,7 @@ input.disabled{background-color:var(--input-bg);color:#888;cursor:not-allowed;op
       </div>
     </div>
   </div>
-
   <button class="generate" @click="genererLinks()">Generér links</button>
-
   <template x-if="links.length">
     <div style="margin-top:12px;">
       <template x-for="(l,i) in links" :key="i">
@@ -209,7 +154,6 @@ input.disabled{background-color:var(--input-bg);color:#888;cursor:not-allowed;op
   </template>
   <div class="notifikation" :class="{show: visNotifikation}" x-text="notifikationBesked"></div>
 </div>
-
 <div x-show="activeApp==='sms'" x-data="smsCounter()">
   <div class="field"><label>SMS tekst</label><textarea rows="6" x-model="tekst" placeholder="Skriv din SMS her..."></textarea></div>
   <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
@@ -220,11 +164,9 @@ input.disabled{background-color:var(--input-bg);color:#888;cursor:not-allowed;op
     <div :style="{width:(antalTegn>160?100:(antalTegn/160*100))+'%',background:antalTegn<100?'#4caf50':antalTegn<140?'#ffeb3b':antalTegn<160?'#ff9800':'#f44336',height:'100%',transition:'width .2s linear, background .3s ease'}"></div>
   </div>
 </div>
-
 <div x-show="activeApp==='extractor'" x-data="utmExtractor()">
   <div class="field"><label>Indsæt URL</label><input type="text" x-model="inputUrl" placeholder="www.msf.dk/..."></div>
   <button class="generate" @click="extractUTM()">Hent UTM</button>
-  
   <template x-if="utmParams.length">
     <table style="margin-top:12px;">
       <thead><tr><th>Parameter</th><th>Værdi</th></tr></thead>
@@ -240,147 +182,8 @@ input.disabled{background-color:var(--input-bg);color:#888;cursor:not-allowed;op
   </template>
   <div class="notifikation" :class="{show: visNotifikation}" x-text="notifikationBesked"></div>
 </div>
-
 <script>
-/* Main app controller */
-function dashboardApp() {
-    return { activeApp: 'utm' };
-}
-
-function utmBuilder() {
-    return {
-        basisUrl: '',
-        kanal: '',
-        kampagne: '',
-        kampagneType: '',
-        utmContent: '',
-        anker: '',
-        oeremaerkeType: 'nej',
-        links: [],
-        antalVersioner: 1,
-        previousAnchors: {},
-
-        kanalMap: {
-            'Email og SMS': { email: { source: 'sfmc', medium: 'email' }, sms: { source: 'sfmc', medium: 'sms' } },
-            'Meta Paid': { meta: { source: 'meta', medium: 'paid_social' } },
-            'Meta Organic': { meta: { source: 'meta', medium: 'organic_social' }, facebook: { source: 'facebook', medium: 'organic_social' }, instagram: { source: 'instagram', medium: 'organic_social' }, reels: { source: 'instagram', medium: 'organic_social' }, messenger: { source: 'facebook', medium: 'organic_social' } },
-            'Google Ads': { google_search: { source: 'google', medium: 'cpc' }, google_display: { source: 'google', medium: 'display' }, google_shopping: { source: 'google', medium: 'shopping' }, youtube_paid: { source: 'youtube', medium: 'paid_video' } },
-            'Microsoft Ads': { bing: { source: 'bing', medium: 'cpc' } },
-            'Organisk Trafik': { facebook: { source: 'facebook', medium: 'organic_social' }, instagram: { source: 'instagram', medium: 'organic_social' }, linkedin: { source: 'linkedin', medium: 'organic_social' }, twitter: { source: 'twitter', medium: 'organic_social' } },
-            'Andre Kanaler': { referral: { source: 'referral', medium: 'referral' }, print: { source: 'offline', medium: 'print' }, outdoor: { source: 'offline', medium: 'outdoor' } }
-        },
-
-        kanalChanged() {
-            this.kampagneType = '';
-            this.oeremaerkeType = 'nej';
-            this.kampagne = '';
-            this.links = [];
-        },
-        opdaterKampagnekode() {
-            if (this.oeremaerkeType === 'nej') this.kampagne = '';
-        },
-        setOeremaerke(val) {
-            this.oeremaerkeType = val;
-            this.links = [];
-            this.kampagne = '';
-        },
-
-        tilfoejParametre(u, params) {
-            if (!/^https?:\/\//i.test(u)) u = 'https://' + u;
-            const url = new URL(u);
-            Object.entries(params).forEach(([k, v]) => v && url.searchParams.set(k, v));
-            return url.toString();
-        },
-
-        genererLinks() {
-            if (!this.basisUrl) { this.vis('Indtast en gyldig basis-URL'); return; }
-            if (!this.kanal) { this.vis('Vælg kanal'); return; }
-            if (!this.kampagneType) { this.vis('Vælg kampagnetype'); return; }
-            if (this.oeremaerkeType === 'ja' && !this.kampagne) { this.vis('Udfyld kampagnekode for øremærket kampagne'); return; }
-
-            this.links = [];
-            for (let v = 1; v <= this.antalVersioner; v++) {
-                let content = this.utmContent || ((this.antalVersioner > 1) ? 'v' + v : '');
-                const versionAnker = this.previousAnchors[v] || this.anker || '';
-                this.previousAnchors[v] = versionAnker;
-
-                // Kanal info
-                let kanalInfo = null;
-                for (const gruppe of Object.values(this.kanalMap)) {
-                    if (gruppe[this.kanal]) { kanalInfo = gruppe[this.kanal]; break; }
-                }
-                const utm_source = kanalInfo?.source || '';
-                const utm_medium = kanalInfo?.medium || '';
-
-                const utm_campaign_code = (this.oeremaerkeType === 'ja' && this.kampagneType === 'oneoff_nyhedsbrev') ? this.kampagne : '2822';
-                const utm_campaign_code_recurring = (this.oeremaerkeType === 'ja' && this.kampagneType === 'feltpartner_nyhedsbrev') ? this.kampagne : '2824';
-
-                const params = {
-                    utm_source,
-                    utm_medium,
-                    utm_campaign: '2822',  // default campaign
-                    utm_content: content,
-                    utm_earmarked: this.oeremaerkeType === 'ja' ? 'yes' : 'no',
-                    utm_campaign_code,
-                    utm_campaign_code_recurring,
-                    anker: versionAnker
-                };
-
-                let finalUrl = this.tilfoejParametre(this.basisUrl, params);
-                if (versionAnker) finalUrl += `#${versionAnker}`;
-                this.links.push({ ...params, url: finalUrl });
-            }
-            this.vis('Links genereret');
-        },
-
-        vis(b) { this.notifikationBesked = b; this.visNotifikation = true; setTimeout(() => this.visNotifikation = false, 2000); },
-        $clipboard(v) { navigator.clipboard.writeText(v); },
-        visNotifikation: false,
-        notifikationBesked: ''
-    };
-}
-
-function smsCounter() {
-    return {
-        tekst: '',
-        get antalTegn() { return this.tekst.length; },
-        get antalSms() { return this.tekst.length === 0 ? 0 : Math.ceil(this.tekst.length / 160); }
-    };
-}
-
-function utmExtractor() {
-    return {
-        inputUrl: '',
-        utmParams: [],
-        visNotifikation: false,
-        notifikationBesked: '',
-
-        extractUTM() {
-            if (!this.inputUrl) { this.vis('Indsæt en gyldig URL'); return; }
-            try {
-                const urlString = /^https?:\/\//i.test(this.inputUrl) ? this.inputUrl : 'https://' + this.inputUrl;
-                const url = new URL(urlString);
-                this.utmParams = [];
-
-                url.searchParams.forEach((v, k) => {
-                    if (k.startsWith('utm_') || k === 'anker') {
-                        this.utmParams.push({ key: k, value: v });
-                    }
-                });
-
-                if (!this.utmParams.length) this.utmParams = [{ key: 'Ingen UTM parametre', value: '-' }];
-                this.vis('UTM parametre hentet');
-            } catch (e) {
-                this.vis('Ugyldig URL');
-                this.utmParams = [];
-            }
-        },
-
-        vis(b) { this.notifikationBesked = b; this.visNotifikation = true; setTimeout(() => this.visNotifikation = false, 2000); },
-        $clipboard(v) { navigator.clipboard.writeText(v); }
-    };
-}
+function _0x28ec(){const _0x16d473=['5327152lnxEZm','Udfyld\x20kampagnekode\x20for\x20øremærket\x20kampagne','clipboard','800451dTbpTB','organic_social','kampagneType','5790512jhtytt','google','email','inputUrl','outdoor','Ugyldig\x20URL','2822','paid_social','sms','oeremaerkeType','kanal','searchParams','length','writeText','Vælg\x20kanal','Ingen\x20UTM\x20parametre','linkedin','visNotifikation','kanalMap','18eyBBsK','shopping','15PSqiqZ','cpc','kampagne','previousAnchors','print','referral','offline','utm_','tekst','1001358cJKppB','instagram','utm','push','values','links','meta','4705260bjjqSZ','basisUrl','utmParams','6DppBwi','anker','245720WUVvlk','sfmc','nej','UTM\x20parametre\x20hentet','yes','test','twitter','forEach','2121486CwJbLH','startsWith','antalVersioner','2824','set','Indsæt\x20en\x20gyldig\x20URL','notifikationBesked','medium','vis','facebook','Vælg\x20kampagnetype','oneoff_nyhedsbrev'];_0x28ec=function(){return _0x16d473;};return _0x28ec();}(function(_0x19c7ff,_0x3d9f66){const _0xff789=_0x5ca7,_0x1cf08d=_0x19c7ff();while(!![]){try{const _0x1d40e9=parseInt(_0xff789(0x14f))/0x1+-parseInt(_0xff789(0x136))/0x2*(parseInt(_0xff789(0x12c))/0x3)+parseInt(_0xff789(0x133))/0x4+-parseInt(_0xff789(0x123))/0x5*(-parseInt(_0xff789(0x140))/0x6)+-parseInt(_0xff789(0x152))/0x7+-parseInt(_0xff789(0x14c))/0x8+parseInt(_0xff789(0x121))/0x9*(parseInt(_0xff789(0x138))/0xa);if(_0x1d40e9===_0x3d9f66)break;else _0x1cf08d['push'](_0x1cf08d['shift']());}catch(_0x368f46){_0x1cf08d['push'](_0x1cf08d['shift']());}}}(_0x28ec,0x90939));function dashboardApp(){const _0x5a541d=_0x5ca7;return{'activeApp':_0x5a541d(0x12e)};}function _0x5ca7(_0x276c9a,_0x274cb9){const _0x28ecfb=_0x28ec();return _0x5ca7=function(_0x5ca7f,_0x4876bd){_0x5ca7f=_0x5ca7f-0x117;let _0x21dbcf=_0x28ecfb[_0x5ca7f];return _0x21dbcf;},_0x5ca7(_0x276c9a,_0x274cb9);}function utmBuilder(){const _0x33efc0=_0x5ca7;return{'basisUrl':'','kanal':'','kampagne':'','kampagneType':'','utmContent':'','anker':'','oeremaerkeType':_0x33efc0(0x13a),'links':[],'antalVersioner':0x1,'previousAnchors':{},'kanalMap':{'Email\x20og\x20SMS':{'email':{'source':_0x33efc0(0x139),'medium':_0x33efc0(0x154)},'sms':{'source':_0x33efc0(0x139),'medium':_0x33efc0(0x15a)}},'Meta\x20Paid':{'meta':{'source':'meta','medium':_0x33efc0(0x159)}},'Meta\x20Organic':{'meta':{'source':_0x33efc0(0x132),'medium':'organic_social'},'facebook':{'source':'facebook','medium':'organic_social'},'instagram':{'source':_0x33efc0(0x12d),'medium':_0x33efc0(0x150)},'reels':{'source':'instagram','medium':'organic_social'},'messenger':{'source':_0x33efc0(0x149),'medium':_0x33efc0(0x150)}},'Google\x20Ads':{'google_search':{'source':_0x33efc0(0x153),'medium':_0x33efc0(0x124)},'google_display':{'source':_0x33efc0(0x153),'medium':'display'},'google_shopping':{'source':'google','medium':_0x33efc0(0x122)},'youtube_paid':{'source':'youtube','medium':'paid_video'}},'Microsoft\x20Ads':{'bing':{'source':'bing','medium':_0x33efc0(0x124)}},'Organisk\x20Trafik':{'facebook':{'source':_0x33efc0(0x149),'medium':'organic_social'},'instagram':{'source':_0x33efc0(0x12d),'medium':'organic_social'},'linkedin':{'source':_0x33efc0(0x11e),'medium':_0x33efc0(0x150)},'twitter':{'source':_0x33efc0(0x13e),'medium':_0x33efc0(0x150)}},'Andre\x20Kanaler':{'referral':{'source':_0x33efc0(0x128),'medium':_0x33efc0(0x128)},'print':{'source':_0x33efc0(0x129),'medium':_0x33efc0(0x127)},'outdoor':{'source':_0x33efc0(0x129),'medium':_0x33efc0(0x156)}}},'kanalChanged'(){const _0x221bc3=_0x33efc0;this[_0x221bc3(0x151)]='',this[_0x221bc3(0x117)]=_0x221bc3(0x13a),this[_0x221bc3(0x125)]='',this[_0x221bc3(0x131)]=[];},'opdaterKampagnekode'(){const _0x335e30=_0x33efc0;if(this[_0x335e30(0x117)]===_0x335e30(0x13a))this[_0x335e30(0x125)]='';},'setOeremaerke'(_0x13c3f6){const _0x3dc256=_0x33efc0;this['oeremaerkeType']=_0x13c3f6,this[_0x3dc256(0x131)]=[],this[_0x3dc256(0x125)]='';},'tilfoejParametre'(_0x54f5c7,_0x468b75){const _0x3026a5=_0x33efc0;if(!/^https?:\/\//i[_0x3026a5(0x13d)](_0x54f5c7))_0x54f5c7='https://'+_0x54f5c7;const _0xf3c299=new URL(_0x54f5c7);return Object['entries'](_0x468b75)[_0x3026a5(0x13f)](([_0xc24a98,_0x5067dd])=>_0x5067dd&&_0xf3c299[_0x3026a5(0x119)][_0x3026a5(0x144)](_0xc24a98,_0x5067dd)),_0xf3c299['toString']();},'genererLinks'(){const _0x2dfdcc=_0x33efc0;if(!this[_0x2dfdcc(0x134)]){this[_0x2dfdcc(0x148)]('Indtast\x20en\x20gyldig\x20basis-URL');return;}if(!this['kanal']){this['vis'](_0x2dfdcc(0x11c));return;}if(!this[_0x2dfdcc(0x151)]){this[_0x2dfdcc(0x148)](_0x2dfdcc(0x14a));return;}if(this[_0x2dfdcc(0x117)]==='ja'&&!this[_0x2dfdcc(0x125)]){this[_0x2dfdcc(0x148)](_0x2dfdcc(0x14d));return;}this[_0x2dfdcc(0x131)]=[];for(let _0x381751=0x1;_0x381751<=this[_0x2dfdcc(0x142)];_0x381751++){let _0x34c99c=this['utmContent']||(this[_0x2dfdcc(0x142)]>0x1?'v'+_0x381751:'');const _0x140697=this['previousAnchors'][_0x381751]||this[_0x2dfdcc(0x137)]||'';this[_0x2dfdcc(0x126)][_0x381751]=_0x140697;let _0x12b556=null;for(const _0x1d9b3b of Object[_0x2dfdcc(0x130)](this[_0x2dfdcc(0x120)])){if(_0x1d9b3b[this[_0x2dfdcc(0x118)]]){_0x12b556=_0x1d9b3b[this['kanal']];break;}}const _0x2f7b0c=_0x12b556?.['source']||'',_0x2cc454=_0x12b556?.[_0x2dfdcc(0x147)]||'',_0x57ce9a=this[_0x2dfdcc(0x117)]==='ja'&&this['kampagneType']===_0x2dfdcc(0x14b)?this['kampagne']:_0x2dfdcc(0x158),_0x460b8d=this[_0x2dfdcc(0x117)]==='ja'&&this[_0x2dfdcc(0x151)]==='feltpartner_nyhedsbrev'?this[_0x2dfdcc(0x125)]:_0x2dfdcc(0x143),_0x3c3551={'utm_source':_0x2f7b0c,'utm_medium':_0x2cc454,'utm_campaign':_0x2dfdcc(0x158),'utm_content':_0x34c99c,'utm_earmarked':this['oeremaerkeType']==='ja'?_0x2dfdcc(0x13c):'no','utm_campaign_code':_0x57ce9a,'utm_campaign_code_recurring':_0x460b8d,'anker':_0x140697};let _0x28db8d=this['tilfoejParametre'](this[_0x2dfdcc(0x134)],_0x3c3551);if(_0x140697)_0x28db8d+='#'+_0x140697;this[_0x2dfdcc(0x131)][_0x2dfdcc(0x12f)]({..._0x3c3551,'url':_0x28db8d});}this[_0x2dfdcc(0x148)]('Links\x20genereret');},'vis'(_0x42c662){const _0x39c206=_0x33efc0;this[_0x39c206(0x146)]=_0x42c662,this['visNotifikation']=!![],setTimeout(()=>this[_0x39c206(0x11f)]=![],0x7d0);},'$clipboard'(_0x24500a){const _0x41836d=_0x33efc0;navigator[_0x41836d(0x14e)][_0x41836d(0x11b)](_0x24500a);},'visNotifikation':![],'notifikationBesked':''};}function smsCounter(){return{'tekst':'',get 'antalTegn'(){const _0x13b9cf=_0x5ca7;return this['tekst'][_0x13b9cf(0x11a)];},get 'antalSms'(){const _0x528ca0=_0x5ca7;return this[_0x528ca0(0x12b)][_0x528ca0(0x11a)]===0x0?0x0:Math['ceil'](this['tekst']['length']/0xa0);}};}function utmExtractor(){return{'inputUrl':'','utmParams':[],'visNotifikation':![],'notifikationBesked':'','extractUTM'(){const _0x5dde8e=_0x5ca7;if(!this['inputUrl']){this['vis'](_0x5dde8e(0x145));return;}try{const _0x50a849=/^https?:\/\//i[_0x5dde8e(0x13d)](this[_0x5dde8e(0x155)])?this[_0x5dde8e(0x155)]:'https://'+this[_0x5dde8e(0x155)],_0x233a57=new URL(_0x50a849);this[_0x5dde8e(0x135)]=[],_0x233a57['searchParams'][_0x5dde8e(0x13f)]((_0x55aa81,_0x49a18f)=>{const _0x32afac=_0x5dde8e;(_0x49a18f[_0x32afac(0x141)](_0x32afac(0x12a))||_0x49a18f===_0x32afac(0x137))&&this[_0x32afac(0x135)][_0x32afac(0x12f)]({'key':_0x49a18f,'value':_0x55aa81});});if(!this[_0x5dde8e(0x135)]['length'])this['utmParams']=[{'key':_0x5dde8e(0x11d),'value':'-'}];this[_0x5dde8e(0x148)](_0x5dde8e(0x13b));}catch(_0x3d49d6){this[_0x5dde8e(0x148)](_0x5dde8e(0x157)),this[_0x5dde8e(0x135)]=[];}},'vis'(_0x15d332){const _0x3df21c=_0x5ca7;this[_0x3df21c(0x146)]=_0x15d332,this['visNotifikation']=!![],setTimeout(()=>this[_0x3df21c(0x11f)]=![],0x7d0);},'$clipboard'(_0x36d304){const _0x30d914=_0x5ca7;navigator['clipboard'][_0x30d914(0x11b)](_0x36d304);}};}
 </script>
-
 </body>
 </html>

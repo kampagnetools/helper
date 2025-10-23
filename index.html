@@ -327,7 +327,6 @@ function utmBuilder() {
             this.links = [];
         },
 
-        // 🔧 Updated: only clears if øremærket = nej
         opdaterKampagnekode() {
             if (this.oeremaerkeType === 'nej') {
                 this.kampagne = '';
@@ -335,7 +334,6 @@ function utmBuilder() {
             this.links = [];
         },
 
-        // 🔧 Updated: only clears if switching to nej
         setOeremaerke(val) {
             this.oeremaerkeType = val;
             this.links = [];
@@ -383,11 +381,11 @@ function utmBuilder() {
                 let utm_medium = kanalInfo.medium || '';
                 let utm_campaign_value = this.aktiverKampagneNavn && this.kampagneNavn ? this.kampagneNavn : 'NIL';
 
-                // Default values
+                // Default værdier
                 let utm_campaign_code = 2822;
                 let utm_campaign_code_recurring = 2824;
 
-                // Replace only the one that matches selected type
+                // Kun valgte
                 if (this.oeremaerkeType === 'ja' && this.kampagne) {
                     if (this.kampagneType === 'oneoff_nyhedsbrev') {
                         utm_campaign_code = this.kampagne;

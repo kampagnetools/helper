@@ -54,7 +54,7 @@ input:checked + .slider:before {
 
 .slider.round {
   border-radius: 20px;
-}
+}       
 
 .slider.round:before {
   border-radius: 50%;
@@ -179,7 +179,7 @@ input:checked + .slider:before {
       style="overflow:hidden;"
     >
       <div class="field">
-        <label>Indhold (utm_content)</label>
+        <label>Indhold</label>
         <select x-model="utmContent">
           <option value="">Ingen</option>
           <template x-for="i in antalVersioner" :key="i">
@@ -187,6 +187,8 @@ input:checked + .slider:before {
           </template>
         </select>
       </div>
+      
+      
 
       <div class="field">
         <label>Antal versioner</label>
@@ -205,11 +207,17 @@ input:checked + .slider:before {
           <option value="footer">footer</option>
         </select>
       </div>
+     <div class="field">
+  <label>Nødsituation</label>
+  <div class="segmented-control">
+    <button :class="{ 'active': emergency === 'yes' }" @click="emergency='yes'">Ja</button>
+    <button :class="{ 'active': emergency === 'no' }" @click="emergency='no'">Nej</button>
+  </div>
+</div>
     </div>
   </div>
 
   <button class="generate" @click="genererLinks()">Generér links</button>
-
   <template x-if="links.length">
     <div style="margin-top:12px;">
       <template x-for="(l,i) in links" :key="i">
@@ -281,6 +289,7 @@ function utmBuilder() {
         kampagne: '',
         kampagneNavn: '',
         aktiverKampagneNavn: false,
+        emergency: 'no',
         kampagneType: '',
         utmContent: '',
         anker: '',
@@ -288,9 +297,6 @@ function utmBuilder() {
         links: [],
         antalVersioner: 1,
         previousAnchors: {},
-        visNotifikation: false,
-        notifikationBesked: '',
-
         kanalMap: {
             'Email og SMS': {
                 'Email': { source: 'sfmc', medium: 'email' },
@@ -328,91 +334,84 @@ function utmBuilder() {
         },
 
         opdaterKampagnekode() {
-            if (this.oeremaerkeType === 'nej') {
-                this.kampagne = '';
-            }
-            this.links = [];
+            if (this.oeremaerkeType === 'nej') this.kampagne = '';
         },
 
         setOeremaerke(val) {
             this.oeremaerkeType = val;
             this.links = [];
-            if (val === 'nej') {
-                this.kampagne = '';
-            }
+            if (val === 'nej') this.kampagne = '';
         },
 
         tilfoejParametre(url, params) {
             if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
             const u = new URL(url);
-            Object.entries(params).forEach(([key, value]) => {
-                if (value !== '' && value !== null && value !== undefined)
-                    u.searchParams.set(key, value);
-            });
+            Object.entries(params).forEach(([key, value]) => value && u.searchParams.set(key, value));
             return u.toString();
         },
 
-        genererLinks() {
-            if (!this.basisUrl) { this.vis('Indtast en gyldig basis-URL'); return; }
-            if (!this.kanal) { this.vis('Vælg kanal'); return; }
-            if (!this.kampagneType) { this.vis('Vælg kampagnetype'); return; }
-            if (this.oeremaerkeType === 'ja' && !this.kampagne) {
-                this.vis('Udfyld kampagnekode for øremærket kampagne');
-                return;
+     genererLinks() {
+    if (!this.basisUrl) { this.vis('Indtast en gyldig basis-URL'); return; }
+    if (!this.kanal) { this.vis('Vælg kanal'); return; }
+    if (!this.kampagneType) { this.vis('Vælg kampagnetype'); return; }
+    if (this.oeremaerkeType === 'ja' && !this.kampagne) { this.vis('Udfyld kampagnekode for øremærket kampagne'); return; }
+
+    this.links = [];
+    for (let i = 1; i <= this.antalVersioner; i++) {
+        let version = this.antalVersioner > 1 ? 'v' + i : '';
+        let ankerValue = this.previousAnchors[i] || this.anker || '';
+        this.previousAnchors[i] = ankerValue;
+
+        // Find kanalinfo fra kanalMap
+        let kanalInfo = {};
+        for (let gruppe of Object.values(this.kanalMap)) {
+            if (this.kanal in gruppe) {
+                kanalInfo = gruppe[this.kanal];
+                break;
             }
+        }
 
-            this.links = [];
+        let utm_source = kanalInfo.source || '';
+        let utm_medium = kanalInfo.medium || '';
 
-            for (let i = 1; i <= this.antalVersioner; i++) {
-                let version = this.antalVersioner > 1 ? 'v' + i : '';
-                let ankerValue = this.previousAnchors[i] || this.anker || '';
-                this.previousAnchors[i] = ankerValue;
+        let utm_campaign_value = this.aktiverKampagneNavn && this.kampagneNavn ? this.kampagneNavn : 'NIL';
 
-                // Find kanalinfo
-                let kanalInfo = {};
-                for (let gruppe of Object.values(this.kanalMap)) {
-                    if (this.kanal in gruppe) {
-                        kanalInfo = gruppe[this.kanal];
-                        break;
-                    }
-                }
+        let utm_campaign_code = 2822;          
+        let utm_campaign_code_recurring = 2824;
 
-                let utm_source = kanalInfo.source || '';
-                let utm_medium = kanalInfo.medium || '';
-                let utm_campaign_value = this.aktiverKampagneNavn && this.kampagneNavn ? this.kampagneNavn : 'NIL';
-
-                // Default værdier
-                let utm_campaign_code = 2822;
-                let utm_campaign_code_recurring = 2824;
-
-                // Kun valgte
-                if (this.oeremaerkeType === 'ja' && this.kampagne) {
-                    if (this.kampagneType === 'oneoff_nyhedsbrev') {
-                        utm_campaign_code = this.kampagne;
-                    } else if (this.kampagneType === 'feltpartner_nyhedsbrev') {
-                        utm_campaign_code_recurring = this.kampagne;
-                    }
-                }
-
-                let params = {
-                    utm_source,
-                    utm_medium,
-                    utm_campaign: utm_campaign_value,
-                    utm_content: version,
-                    utm_earmarked: this.oeremaerkeType === 'ja' ? 'yes' : 'no',
-                    utm_campaign_code,
-                    utm_campaign_code_recurring,
-                    anker: ankerValue
-                };
-
-                let fullUrl = this.tilfoejParametre(this.basisUrl, params);
-                if (ankerValue) fullUrl += '#' + ankerValue;
-
-                this.links.push({ ...params, url: fullUrl });
+        if (this.oeremaerkeType === 'ja' && this.kampagne) {
+            if (this.kampagneType === 'oneoff_nyhedsbrev') {
+                utm_campaign_code = this.kampagne;
+            } else if (this.kampagneType === 'feltpartner_nyhedsbrev') {
+                utm_campaign_code_recurring = this.kampagne;
             }
+        }
 
-            this.vis('Links genereret');
-        },
+        let params = {
+            utm_source,
+            utm_medium,
+            utm_campaign: utm_campaign_value,
+            utm_content: version,
+            utm_earmarked: this.oeremaerkeType === 'ja' ? 'yes' : 'no',
+            utm_campaign_code,
+            utm_campaign_code_recurring,
+            anker: ankerValue
+        };
+
+        if (this.emergency === 'yes') {
+    params.utm_emergency = 'yes';
+}
+
+        let fullUrl = this.tilfoejParametre(this.basisUrl, params);
+        if (ankerValue) fullUrl += '#' + ankerValue;
+
+        this.links.push({ ...params, url: fullUrl });
+    }
+
+    this.vis('Links genereret');
+},
+
+
 
         vis(msg) {
             this.notifikationBesked = msg;
@@ -422,7 +421,10 @@ function utmBuilder() {
 
         $clipboard(text) {
             navigator.clipboard.writeText(text);
-        }
+        },
+
+        visNotifikation: false,
+        notifikationBesked: ''
     };
 }
 

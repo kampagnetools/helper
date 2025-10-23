@@ -288,6 +288,9 @@ function utmBuilder() {
         links: [],
         antalVersioner: 1,
         previousAnchors: {},
+        visNotifikation: false,
+        notifikationBesked: '',
+
         kanalMap: {
             'Email og SMS': {
                 'Email': { source: 'sfmc', medium: 'email' },
@@ -324,81 +327,94 @@ function utmBuilder() {
             this.links = [];
         },
 
+        // 🔧 Updated: only clears if øremærket = nej
         opdaterKampagnekode() {
-            if (this.oeremaerkeType === 'nej') this.kampagne = '';
+            if (this.oeremaerkeType === 'nej') {
+                this.kampagne = '';
+            }
+            this.links = [];
         },
 
+        // 🔧 Updated: only clears if switching to nej
         setOeremaerke(val) {
             this.oeremaerkeType = val;
             this.links = [];
-            if (val === 'nej') this.kampagne = '';
+            if (val === 'nej') {
+                this.kampagne = '';
+            }
         },
 
         tilfoejParametre(url, params) {
             if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
             const u = new URL(url);
-            Object.entries(params).forEach(([key, value]) => value && u.searchParams.set(key, value));
+            Object.entries(params).forEach(([key, value]) => {
+                if (value !== '' && value !== null && value !== undefined)
+                    u.searchParams.set(key, value);
+            });
             return u.toString();
         },
 
-     genererLinks() {
-    if (!this.basisUrl) { this.vis('Indtast en gyldig basis-URL'); return; }
-    if (!this.kanal) { this.vis('Vælg kanal'); return; }
-    if (!this.kampagneType) { this.vis('Vælg kampagnetype'); return; }
-    if (this.oeremaerkeType === 'ja' && !this.kampagne) { this.vis('Udfyld kampagnekode for øremærket kampagne'); return; }
-
-    this.links = [];
-    for (let i = 1; i <= this.antalVersioner; i++) {
-        let version = this.antalVersioner > 1 ? 'v' + i : '';
-        let ankerValue = this.previousAnchors[i] || this.anker || '';
-        this.previousAnchors[i] = ankerValue;
-
-        // Find kanalinfo fra kanalMap
-        let kanalInfo = {};
-        for (let gruppe of Object.values(this.kanalMap)) {
-            if (this.kanal in gruppe) {
-                kanalInfo = gruppe[this.kanal];
-                break;
+        genererLinks() {
+            if (!this.basisUrl) { this.vis('Indtast en gyldig basis-URL'); return; }
+            if (!this.kanal) { this.vis('Vælg kanal'); return; }
+            if (!this.kampagneType) { this.vis('Vælg kampagnetype'); return; }
+            if (this.oeremaerkeType === 'ja' && !this.kampagne) {
+                this.vis('Udfyld kampagnekode for øremærket kampagne');
+                return;
             }
-        }
 
-        let utm_source = kanalInfo.source || '';
-        let utm_medium = kanalInfo.medium || '';
+            this.links = [];
 
-        let utm_campaign_value = this.aktiverKampagneNavn && this.kampagneNavn ? this.kampagneNavn : 'NIL';
+            for (let i = 1; i <= this.antalVersioner; i++) {
+                let version = this.antalVersioner > 1 ? 'v' + i : '';
+                let ankerValue = this.previousAnchors[i] || this.anker || '';
+                this.previousAnchors[i] = ankerValue;
 
-        let utm_campaign_code = 2822;          
-        let utm_campaign_code_recurring = 2824;
+                // Find kanalinfo
+                let kanalInfo = {};
+                for (let gruppe of Object.values(this.kanalMap)) {
+                    if (this.kanal in gruppe) {
+                        kanalInfo = gruppe[this.kanal];
+                        break;
+                    }
+                }
 
-        if (this.oeremaerkeType === 'ja' && this.kampagne) {
-            if (this.kampagneType === 'oneoff_nyhedsbrev') {
-                utm_campaign_code = this.kampagne;
-            } else if (this.kampagneType === 'feltpartner_nyhedsbrev') {
-                utm_campaign_code_recurring = this.kampagne;
+                let utm_source = kanalInfo.source || '';
+                let utm_medium = kanalInfo.medium || '';
+                let utm_campaign_value = this.aktiverKampagneNavn && this.kampagneNavn ? this.kampagneNavn : 'NIL';
+
+                // Default values
+                let utm_campaign_code = 2822;
+                let utm_campaign_code_recurring = 2824;
+
+                // Replace only the one that matches selected type
+                if (this.oeremaerkeType === 'ja' && this.kampagne) {
+                    if (this.kampagneType === 'oneoff_nyhedsbrev') {
+                        utm_campaign_code = this.kampagne;
+                    } else if (this.kampagneType === 'feltpartner_nyhedsbrev') {
+                        utm_campaign_code_recurring = this.kampagne;
+                    }
+                }
+
+                let params = {
+                    utm_source,
+                    utm_medium,
+                    utm_campaign: utm_campaign_value,
+                    utm_content: version,
+                    utm_earmarked: this.oeremaerkeType === 'ja' ? 'yes' : 'no',
+                    utm_campaign_code,
+                    utm_campaign_code_recurring,
+                    anker: ankerValue
+                };
+
+                let fullUrl = this.tilfoejParametre(this.basisUrl, params);
+                if (ankerValue) fullUrl += '#' + ankerValue;
+
+                this.links.push({ ...params, url: fullUrl });
             }
-        }
 
-        let params = {
-            utm_source,
-            utm_medium,
-            utm_campaign: utm_campaign_value,
-            utm_content: version,
-            utm_earmarked: this.oeremaerkeType === 'ja' ? 'yes' : 'no',
-            utm_campaign_code,
-            utm_campaign_code_recurring,
-            anker: ankerValue
-        };
-
-        let fullUrl = this.tilfoejParametre(this.basisUrl, params);
-        if (ankerValue) fullUrl += '#' + ankerValue;
-
-        this.links.push({ ...params, url: fullUrl });
-    }
-
-    this.vis('Links genereret');
-},
-
-
+            this.vis('Links genereret');
+        },
 
         vis(msg) {
             this.notifikationBesked = msg;
@@ -408,10 +424,7 @@ function utmBuilder() {
 
         $clipboard(text) {
             navigator.clipboard.writeText(text);
-        },
-
-        visNotifikation: false,
-        notifikationBesked: ''
+        }
     };
 }
 

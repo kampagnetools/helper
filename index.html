@@ -436,49 +436,42 @@ function smsCounter() {
     };
 }
 
-extractUTM() {
-    if (!this.inputUrl) { 
-        this.vis('Indsæt en gyldig URL'); 
-        return; 
-    }
+function utmExtractor() {
+    return {
+        inputUrl: '',
+        utmParams: [],
+        visNotifikation: false,
+        notifikationBesked: '',
 
-    try {
-        let url = /^https?:\/\//i.test(this.inputUrl) 
-            ? this.inputUrl 
-            : 'https://' + this.inputUrl;
-
-        const u = new URL(url);
-        this.utmParams = [];
-
-        const renameMap = {
-            'utm_campaign_code': 'UTM Campaign code',
-            'utm_campaign_code_recurring': 'UTM Campaign code recurring',
-            'campaign_code': 'Campaign code',
-            'campaign_code_recurring': 'Campaign code recurring'
-        };
-
-        u.searchParams.forEach((value, key) => {
-            if (key.startsWith('utm_') || key === 'anker' || key in renameMap) {
-
-                let displayKey = renameMap[key] || key;
-
-                this.utmParams.push({
-                    key: displayKey,
-                    value: value
+        extractUTM() {
+            if (!this.inputUrl) { this.vis('Indsæt en gyldig URL'); return; }
+            try {
+                let url = /^https?:\/\//i.test(this.inputUrl) ? this.inputUrl : 'https://' + this.inputUrl;
+                const u = new URL(url);
+                this.utmParams = [];
+                u.searchParams.forEach((value, key) => {
+                    if (key.startsWith('utm_') || key === 'anker') {
+                        this.utmParams.push({ key, value });
+                    }
                 });
+                if (!this.utmParams.length) this.utmParams = [{ key: '-', value: '-' }];
+                this.vis('UTM parametre hentet');
+            } catch {
+                this.vis('Ugyldig URL');
+                this.utmParams = [];
             }
-        });
+        },
 
-        if (!this.utmParams.length) {
-            this.utmParams = [{ key: '-', value: '-' }];
+        vis(msg) {
+            this.notifikationBesked = msg;
+            this.visNotifikation = true;
+            setTimeout(() => this.visNotifikation = false, 2000);
+        },
+
+        $clipboard(text) {
+            navigator.clipboard.writeText(text);
         }
-
-        this.vis('UTM parametre hentet');
-    } catch {
-        this.vis('Ugyldig URL');
-        this.utmParams = [];
-    }
-};
+    };
 }
 </script>
 

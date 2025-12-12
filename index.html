@@ -450,28 +450,24 @@ extractUTM() {
         const u = new URL(url);
         this.utmParams = [];
 
-        // Fang ALLE UTM + anker
+        const renameMap = {
+            'utm_campaign_code': 'UTM Campaign code',
+            'utm_campaign_code_recurring': 'UTM Campaign code recurring',
+            'campaign_code': 'Campaign code',
+            'campaign_code_recurring': 'Campaign code recurring'
+        };
+
         u.searchParams.forEach((value, key) => {
-            if (
-                key.startsWith('utm_') ||
-                key === 'anker' ||
-                key === 'campaign_code' ||
-                key === 'campaign_code_recurring'
-            ) {
-                this.utmParams.push({ key, value });
+            if (key.startsWith('utm_') || key === 'anker' || key in renameMap) {
+
+                let displayKey = renameMap[key] || key;
+
+                this.utmParams.push({
+                    key: displayKey,
+                    value: value
+                });
             }
         });
-
-        // Hvis URL’en har kampagnekoder UDEN prefix (sjældne formater)
-        if (!this.utmParams.some(p => p.key === 'utm_campaign_code')) {
-            let cc = u.searchParams.get('campaign_code');
-            if (cc) this.utmParams.push({ key: 'campaign_code', value: cc });
-        }
-
-        if (!this.utmParams.some(p => p.key === 'utm_campaign_code_recurring')) {
-            let ccr = u.searchParams.get('campaign_code_recurring');
-            if (ccr) this.utmParams.push({ key: 'campaign_code_recurring', value: ccr });
-        }
 
         if (!this.utmParams.length) {
             this.utmParams = [{ key: '-', value: '-' }];

@@ -436,42 +436,53 @@ function smsCounter() {
     };
 }
 
-function utmExtractor() {
-    return {
-        inputUrl: '',
-        utmParams: [],
-        visNotifikation: false,
-        notifikationBesked: '',
+extractUTM() {
+    if (!this.inputUrl) { 
+        this.vis('Indsæt en gyldig URL'); 
+        return; 
+    }
 
-        extractUTM() {
-            if (!this.inputUrl) { this.vis('Indsæt en gyldig URL'); return; }
-            try {
-                let url = /^https?:\/\//i.test(this.inputUrl) ? this.inputUrl : 'https://' + this.inputUrl;
-                const u = new URL(url);
-                this.utmParams = [];
-                u.searchParams.forEach((value, key) => {
-                    if (key.startsWith('utm_') || key === 'anker') {
-                        this.utmParams.push({ key, value });
-                    }
-                });
-                if (!this.utmParams.length) this.utmParams = [{ key: '-', value: '-' }];
-                this.vis('UTM parametre hentet');
-            } catch {
-                this.vis('Ugyldig URL');
-                this.utmParams = [];
+    try {
+        let url = /^https?:\/\//i.test(this.inputUrl) 
+            ? this.inputUrl 
+            : 'https://' + this.inputUrl;
+
+        const u = new URL(url);
+        this.utmParams = [];
+
+        // Fang ALLE UTM + anker
+        u.searchParams.forEach((value, key) => {
+            if (
+                key.startsWith('utm_') ||
+                key === 'anker' ||
+                key === 'campaign_code' ||
+                key === 'campaign_code_recurring'
+            ) {
+                this.utmParams.push({ key, value });
             }
-        },
+        });
 
-        vis(msg) {
-            this.notifikationBesked = msg;
-            this.visNotifikation = true;
-            setTimeout(() => this.visNotifikation = false, 2000);
-        },
-
-        $clipboard(text) {
-            navigator.clipboard.writeText(text);
+        // Hvis URL’en har kampagnekoder UDEN prefix (sjældne formater)
+        if (!this.utmParams.some(p => p.key === 'utm_campaign_code')) {
+            let cc = u.searchParams.get('campaign_code');
+            if (cc) this.utmParams.push({ key: 'campaign_code', value: cc });
         }
-    };
+
+        if (!this.utmParams.some(p => p.key === 'utm_campaign_code_recurring')) {
+            let ccr = u.searchParams.get('campaign_code_recurring');
+            if (ccr) this.utmParams.push({ key: 'campaign_code_recurring', value: ccr });
+        }
+
+        if (!this.utmParams.length) {
+            this.utmParams = [{ key: '-', value: '-' }];
+        }
+
+        this.vis('UTM parametre hentet');
+    } catch {
+        this.vis('Ugyldig URL');
+        this.utmParams = [];
+    }
+};
 }
 </script>
 
